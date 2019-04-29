@@ -1,0 +1,10 @@
+ui:
+    resource: "@UIBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+    prefix: /v1/api
+    defaults: {_format:json}
