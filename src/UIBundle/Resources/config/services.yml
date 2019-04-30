@@ -1,4 +1,0 @@
-services:
-#    ui.example:
-#        class: UIBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
