@@ -7,3 +7,29 @@ services:
       - [ setEntityManager, ["@doctrine.orm.entity_manager"] ]
       - [ setLogger, ["@monolog.logger.exception"] ]
       - [ setTranslator, ["@translator.default"] ]
+
+  request_listener:
+    class: AppBundle\EventListener\RequestListener
+    parent: base_service
+    arguments: ["@monolog.logger.api"]
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+      - { name: monolog.logger, channel: api }
+    public: true
+
+  response_listener:
+    class: AppBundle\EventListener\ResponseListener
+    parent: base_service
+    arguments: ["@monolog.logger.api"]
+    tags:
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+  authentication_token:
+    class: AppBundle\Service\AuthenticateToken
+    parent: base_service
+    public: true
+
+  api_response:
+    class: AppBundle\Service\ApiResponse
+    parent: base_service
+    public: true

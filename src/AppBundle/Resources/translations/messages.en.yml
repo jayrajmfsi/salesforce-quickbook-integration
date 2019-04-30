@@ -1,0 +1,13 @@
+api:
+    quickbooks:
+        success:
+
+        failure:
+
+    salesforce:
+        success:
+
+        failure:
+
+    response:
+        failure: Failure Occurred

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\EventListeners;
+namespace AppBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +42,7 @@ class RequestListener extends BaseService
         $route = $request->attributes->get('_route');
 
         // Checking if request is for APIs.
-        if (0 !== strpos($route, 'app_v')) {
+        if (0 !== strpos($route, 'api_v')) {
             return true;
         }
 

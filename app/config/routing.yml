@@ -1,10 +1,10 @@
-ui:
-    resource: "@UIBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
-    prefix: /v1/api
+    prefix: /v10/api
     defaults: {_format:json}
+
+data_integration.swagger_ui:
+    path: /api/doc/
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }

@@ -2,9 +2,8 @@
 
 
 namespace AppBundle\Service;
-use AppBundle\Controller\V10\User;
 
-class AuthenticateToken
+class AuthenticateToken extends BaseService
 {
 
 }

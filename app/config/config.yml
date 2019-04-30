@@ -73,6 +73,38 @@ swiftmailer:
 sensio_framework_extra:
    router:
         annotations: false
+
+services:
+    api_formatter:
+        class: Monolog\Formatter\JsonFormatter
+    text_formatter:
+            class: Monolog\Formatter\LineFormatter
+
+monolog:
+  handlers:
+    main:
+      type: fingers_crossed
+      action_level: error
+      handler: nested
+    nested:
+      type:  stream
+      path:  "%kernel.logs_dir%/%kernel.environment%.log"
+      level: debug
+    api:
+      type: stream
+      path: "%kernel.logs_dir%/apiRequestResponse.log"
+      level: debug
+      channels: [api]
+      formatter: api_formatter
+    exception:
+      type: stream
+      path: "%kernel.logs_dir%/exception.log"
+      level: error
+      channels: [exception]
+      formatter: api_formatter
+  channels: [api, exception]
+
+# FOS Rest Configuration
 fos_rest:
     param_fetcher_listener: true
     body_listener: true
@@ -94,13 +126,28 @@ fos_rest:
         serializer: ~
     serializer:
         serialize_null: true
-    exception:
-        enabled: true
-        messages:
-            Symfony\Component\HttpKernel\Exception\BadRequestHttpException: true
+
+jms_serializer:
+  visitors:
+    json:
+      options: JSON_UNESCAPED_UNICODE
 
 assetic:
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
     filters:
         cssrewrite: ~
+
+nelmio_api_doc:
+  areas:
+    path_patterns: # an array of regexps
+      - ^/1.
+      - ^/api/1.
+
+  documentation:
+    schemes: [http, https]
+    info:
+      title: QB SF Integration Platform
+      version: 1.0.0
+      description:
+    tags:
