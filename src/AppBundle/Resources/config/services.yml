@@ -1,0 +1,9 @@
+services:
+  base_service:
+    abstract: true
+    class: AppBundle\Service\BaseService
+    calls:
+      - [ setServiceContainer, ["@service_container"] ]
+      - [ setEntityManager, ["@doctrine.orm.entity_manager"] ]
+      - [ setLogger, ["@monolog.logger.exception"] ]
+      - [ setTranslator, ["@translator.default"] ]
