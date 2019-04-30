@@ -2,13 +2,10 @@
 
 
 namespace AppBundle\Controller\V10\User;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
+use AppBundle\Controller\Base\User\UserController as BaseController;
 
-class UserController extends FOSRestController
+class UserController extends BaseController
 {
 
 }

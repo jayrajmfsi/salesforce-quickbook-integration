@@ -42,14 +42,11 @@ class RequestListener extends BaseService
         $route = $request->attributes->get('_route');
 
         // Checking if request is for APIs.
-        if (0 !== strpos($route, 'app')) {
+        if (0 !== strpos($route, 'app_v')) {
             return true;
         }
 
         $this->setRequestContent($request);
-
-        // Getting Auth Service.
-        $authService = $this->serviceContainer->get('b2b_eload.authenticate_authorize_service');
 
         // Logging request.
         $this->apiLogger->debug('API Request: ', [
@@ -58,11 +55,6 @@ class RequestListener extends BaseService
                 'content' => $request->getContent()
             ]
         ]);
-
-        // Authentication for API request.
-        $authService->authenticateApiRequest($request);
-
-        return true;
     }
 
     /**

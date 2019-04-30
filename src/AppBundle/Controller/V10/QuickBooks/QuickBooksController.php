@@ -2,13 +2,10 @@
 
 
 namespace AppBundle\Controller\V10\QuickBooks;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
+use AppBundle\Controller\Base\QuickBooks\QuickBooksController as BaseController;
 
-class QuickBooksController extends FOSRestController
+class QuickBooksController extends BaseController
 {
 
 }

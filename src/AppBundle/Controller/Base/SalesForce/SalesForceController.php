@@ -3,12 +3,11 @@
 
 namespace AppBundle\Controller\Base\SalesForce;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 
-class SalesForceController extends FOSRestController
+class SalesForceController extends AbstractFOSRestController
 {
 
 }
