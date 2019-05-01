@@ -25,10 +25,9 @@ class ExceptionListener extends BaseService
                 'TRACE' => $event->getException()->getTraceAsString()
             ]
         );
-
         $responseService = $this->serviceContainer->get('api_response');
         // Creating Http Error response.
-        $result = $responseService->createApiErrorResponse();
+        $result = $responseService->createApiErrorResponse($event->getException()->getMessage(),$status);
         $response = new JsonResponse($result, $status);
         // Logging Exception in Exception log.
         $this->logger->error('Data Integration Exception :', [
@@ -37,7 +36,6 @@ class ExceptionListener extends BaseService
                 'Content' => $response->getContent()
             ]
         ]);
-
         $event->setResponse($response);
     }
 }

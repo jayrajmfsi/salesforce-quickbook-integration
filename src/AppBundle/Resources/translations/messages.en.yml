@@ -6,8 +6,12 @@ api:
 
     salesforce:
         success:
+            fetchcustomersuccess: Successfully fetched customers from Salesforce
+            newaccesstoken: New access token generated
 
         failure:
+            unauthorized: UnAuthorized
+            invalid_refresh_token: Invalid Refresh Token
 
     response:
         failure: Failure Occurred
