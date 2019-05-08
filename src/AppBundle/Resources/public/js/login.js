@@ -7,7 +7,6 @@
             event.stopPropagation();
             let username = $("#needs-validation").find('input[name="username"]').val();
             let password = $("#needs-validation").find('input[name="password"]').val();
-            console.log(username);
             var person = {
                 username,
                 password,
@@ -21,7 +20,6 @@
                 success: function (data) {
                     if (data.reasonCode === '0') {
                         window.location.href = '/app_dev.php/';
-                        // console.log(window.location.href);
                     } else {
                         alert(data.error.text);
                     }

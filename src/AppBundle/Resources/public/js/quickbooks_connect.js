@@ -1,6 +1,5 @@
 $(document).ready(function() {
     $("#quickbooks-connect").click(function () {
-        console.log('in');
         $.ajax({
             url: 'connect-to-quickbooks',
             type: 'post',

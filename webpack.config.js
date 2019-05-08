@@ -1,6 +1,7 @@
 // webpack.config.js
 var Encore = require('@symfony/webpack-encore');
-
+var webpack = require('webpack');
+var path = require('path');
 Encore
 // directory where all compiled assets will be stored
     .setOutputPath('web/build/')
@@ -13,7 +14,6 @@ Encore
     .disableSingleRuntimeChunk()
     // will output as web/build/app.js
     .addEntry('app', './src/AppBundle/Resources/public/js/app.js')
-
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()
 
@@ -22,4 +22,9 @@ Encore
 ;
 
 // export the final configuration
-module.exports = Encore.getWebpackConfig();
+let config = Encore.getWebpackConfig();
+config.resolve.alias = {
+    'jquery': path.join(__dirname, 'node_modules/jquery/dist/jquery'),
+
+};
+module.exports = config;
