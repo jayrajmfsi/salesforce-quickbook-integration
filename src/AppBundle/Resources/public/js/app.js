@@ -15,5 +15,6 @@ require('../../../../../node_modules/bootstrap/dist/js/bootstrap.min.js');
 require('../../../../../node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js');
 require('../../../../../node_modules/@coreui/coreui/dist/js/coreui.min.js');
 require('./login.js');
-require('./saleforce_connect.js');
+require('./salesforce_connect.js');
 require('./quickbooks_connect.js');
+require('./syncData.js');
