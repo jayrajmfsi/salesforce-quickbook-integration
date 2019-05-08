@@ -6,23 +6,27 @@ security:
         AppBundle\Entity\User:
             algorithm: sha1
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        our_users:
+            entity: { class: UserBundle:User }
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
 
-        main:
+        secured_area:
+            pattern:    ^/
+            form_login:
+                check_path: login_check
+                login_path: login_form
+                default_target_path: home_page
+                remember_me: true
+
+            logout:
+                path:       logout
+                target:     login_form
             anonymous: ~
-            # activate different ways to authenticate
+            remember_me:
+                                        secret:   '%secret%'
+                                        lifetime: 604800 # 1 week in seconds
+                                        path:     /
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
