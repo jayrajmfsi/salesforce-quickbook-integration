@@ -14,6 +14,7 @@ Encore
     .disableSingleRuntimeChunk()
     // will output as web/build/app.js
     .addEntry('app', './src/AppBundle/Resources/public/js/app.js')
+
     // allow legacy applications to use $/jQuery as a global variable
     .autoProvidejQuery()
 
