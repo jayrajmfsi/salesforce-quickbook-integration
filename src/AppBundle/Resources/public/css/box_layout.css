@@ -32,3 +32,10 @@
 .box-layout--sync-background {
     background: url("../images/sync-background.jpg");
 }
+.box-layout__box--sync {
+    margin-top: -10vh;
+}
+
+.box-layout__box__input{
+    margin-bottom: 1.6rem;
+}

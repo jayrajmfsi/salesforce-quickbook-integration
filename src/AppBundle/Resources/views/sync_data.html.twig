@@ -2,19 +2,24 @@
 <head>
     {% block stylesheets %}
         <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
+
     {% endblock %}
     {% block javascripts %}
         <script src="{{ asset('build/app.js') }}"></script>
     {% endblock %}
 </head>
 <body>
-<div class="box-layout box-layout--sync-background">
-    <div class="box-layout__box">
-        <h1 class="box-layout__title">Data Integration</h1>
-        <p>Please click to sync salesforce account with quickbooks</p>
-        <button class="button" id="sync-data">Sync Data</button>
+    <div class="box-layout box-layout--sync-background">
+        <div class="box-layout__box box-layout__box--sync">
+            <h1 class="box-layout__title">Data Integration</h1>
+            <p>Please select date range and click to sync salesforce account with quickbooks</p>
+            <form class="sync-data">
+                <div class="box-layout__box__input">
+                    <input type="text" name="show-daterange" />
+                </div>
+                <button class="app-button" id="sync-data" type="submit">Sync Data</button>
+            </form>
+        </div>
     </div>
-</div>
-
 </body>
 </html>
