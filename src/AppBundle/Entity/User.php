@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     /**
      * @var int
@@ -43,6 +44,14 @@ class User implements UserInterface
      * @ORM\Column(name="qb_realmId", type="string", length=20, nullable=true)
      */
     private $QBrealmId;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean"
+     *  , options={"comment":"0 means user in-active, 1 means user active", "default":"1"})
+     */
+    private $active;
 
     /**
      * @var string
@@ -273,6 +282,21 @@ class User implements UserInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+    /**
      * Get sFinstanceUrl
      *
      * @return string
@@ -280,5 +304,47 @@ class User implements UserInterface
     public function getSFinstanceUrl()
     {
         return $this->SFinstanceUrl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return true;
+    }
+
+    /**
+     * String representation of the user object
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getUsername();
     }
 }
