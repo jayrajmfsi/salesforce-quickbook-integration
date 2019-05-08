@@ -1,0 +1,35 @@
+{#{% extends '@App/Security/layout.html.twig' %}#}
+{#{% set page_title = 'Connect with SalesForce' %}#}
+
+{#{% block body %}#}
+    {#<body>#}
+    {#<div className="box-layout">#}
+        {#<div className="box-layout__box">#}
+            {#<h1 className="box-layout__title">SalesForce Integration</h1>#}
+            {#<p>Please connect with salesforce for data integration</p>#}
+            {#<button className="button">Connect With SalesForce</button>#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<script>#}
+        {#console.log('sada');#}
+    {#</script>#}
+    {#</body>#}
+{#{% endblock %}#}
+<html>
+<head>
+    {% block stylesheets %}
+        <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+    <div class="box-layout box-layout--sf-background">
+        <div class="box-layout__box">
+            <h1 class="box-layout__title">Data Integration</h1>
+            <button class="button" id="salesforce-connect">Connect With SalesForce</button>
+        </div>
+    </div>
+
+</body>
+</html>

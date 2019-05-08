@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% if page_title is defined %} {{ page_title }} | {% endif %} QB SF Integration</title>
+        <base href="./">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+        <meta name="author" content="Łukasz Holeczek">
+        <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+
+        <!-- Global site tag (gtag.js) - Google Analytics-->
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            // Shared ID
+            gtag('config', 'UA-118965717-3');
+            // Bootstrap ID
+            gtag('config', 'UA-118965717-5');
+        </script>
+    {% block stylesheets %}
+    <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
+    {% endblock %}
+    {% endblock %}
+</head>
+{% block body %}
+    <body class="app flex-row align-items-center">
+    {% block content %}{% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+    </body>
+{% endblock %}
+
+</html>

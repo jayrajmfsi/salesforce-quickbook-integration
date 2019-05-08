@@ -6,15 +6,23 @@
     "@coreui/coreui": "^2.1.7",
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "1.2.0",
     "@coreui/icons": "0.3.0",
+    "@symfony/webpack-encore": "^0.27.0",
     "bootstrap": "^4.3.1",
     "chart.js": "2.7.3",
     "core-js": "^2.6.5",
     "flag-icon-css": "^3.2.1",
     "font-awesome": "4.7.0",
-    "jquery": "3.4.0",
+    "jquery": "3.3.1",
     "pace-progress": "1.0.2",
     "perfect-scrollbar": "^1.4.0",
     "popper.js": "^1.14.7",
     "simple-line-icons": "2.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev-server": "./node_modules/.bin/encore dev-server",
+    "dev": "./node_modules/.bin/encore dev",
+    "webpack": "./node_modules/.bin/encore dev --watch",
+    "prod": "./node_modules/.bin/encore production"
   }
 }

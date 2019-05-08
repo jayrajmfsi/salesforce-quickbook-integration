@@ -1,0 +1,17 @@
+<html>
+<head>
+    {% block stylesheets %}
+        <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+<div class="box-layout box-layout--qb-background">
+    <div class="box-layout__box">
+        <h1 class="box-layout__title">Data Integration</h1>
+        <button class="button" id="quickbooks-connect">Connect With Quickbooks</button>
+    </div>
+</div>
+
+</body>
+</html>

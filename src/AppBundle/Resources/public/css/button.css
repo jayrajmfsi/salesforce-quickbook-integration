@@ -1,0 +1,13 @@
+.button {
+    background: #1c88bf;
+    border: none;
+    color: white;
+    font-weight: 500;
+    padding: 1.2rem;
+}
+.button--link {
+   background: none;
+   border: none;
+   color: #a5afd7;
+   padding: 0;
+}

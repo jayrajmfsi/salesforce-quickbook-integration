@@ -1,0 +1,34 @@
+.box-layout {
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.box-layout__box {
+    background: white;
+    border-radius: 3px;
+    padding: 3.2rem 1.6rem;
+    opacity: 1;
+    text-align: center;
+    width: 25rem;
+}
+
+.box-layout__title {
+    margin: 0 0 1.6rem 0;
+    line-height: 1;
+}
+
+.box-layout--sf-background {
+    background: url("../images/salesforce-background.png");
+}
+
+.box-layout--qb-background {
+    background: url("../images/quickbooks-background.png");
+}
+
+.box-layout--sync-background {
+    background: url("../images/sync-background.jpg");
+}
