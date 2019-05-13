@@ -1,32 +1,31 @@
-# To get started with security, check out the documentation:
-# https://symfony.com/doc/current/security.html
 security:
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     encoders:
-        AppBundle\Entity\User:
-            algorithm: sha1
-
-    providers:
-        our_users:
-            entity: { class: UserBundle:User }
+        FOS\UserBundle\Model\UserInterface: sha512
 
     firewalls:
-
-        secured_area:
-            pattern:    ^/
+        main:
+            pattern: ^/
             form_login:
-                check_path: login_check
-                login_path: login_form
-                default_target_path: home_page
-                remember_me: true
+                provider: fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
 
-            logout:
-                path:       logout
-                target:     login_form
-            anonymous: ~
-            remember_me:
-                                        secret:   '%secret%'
-                                        lifetime: 604800 # 1 week in seconds
-                                        path:     /
+                # login success redirecting options (read further below)
+                always_use_default_target_path: true
+                default_target_path: /salesforce-connect
+                target_path_parameter: _target_path
+                use_referer: true
+                use_forward: false
+            anonymous:    true
+
+        dev:
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            security: false
 
     access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }

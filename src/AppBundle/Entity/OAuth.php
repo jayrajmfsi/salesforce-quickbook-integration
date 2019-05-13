@@ -7,12 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * OAuth
  *
- * @ORM\Table(name="OAuth")
+ * @ORM\Table(name="oauth")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OAuthRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class OAuth
 {
+    const SF_OAUTH = 1;
+    const QB_OAUTH = 2;
+
     /**
      * @var int
      *
@@ -28,6 +31,14 @@ class OAuth
      * @ORM\Column(name="grant_type", type="string", length=15, nullable=true)
      */
     private $grantType;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="app_type", type="boolean", nullable=false,length=1,
+     * options={"comment":"1 means saleforce account, 2 means quickbooks account", "default":"1"})
+     */
+    private $appType;
 
     /**
      * @var string
@@ -68,7 +79,7 @@ class OAuth
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="User", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @var \DateTime
@@ -292,26 +303,41 @@ class OAuth
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param \AppBundle\Entity\User $userId
+     * @param \AppBundle\Entity\User $user
      *
      * @return OAuth
      */
-    public function setUserId(\AppBundle\Entity\User $userId = null)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAppType()
+    {
+        return $this->appType;
+    }
+    /**
+     * @param bool $appType
+     */
+    public function setAppType($appType)
+    {
+        $this->appType = $appType;
     }
 }

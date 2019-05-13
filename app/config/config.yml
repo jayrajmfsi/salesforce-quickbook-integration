@@ -99,7 +99,7 @@ monolog:
     exception:
       type: stream
       path: "%kernel.logs_dir%/exception.log"
-      level: error
+      level: debug
       channels: [exception]
       formatter: api_formatter
   channels: [api, exception]
@@ -151,3 +151,10 @@ nelmio_api_doc:
       version: 1.0.0
       description:
     tags:
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "App User"

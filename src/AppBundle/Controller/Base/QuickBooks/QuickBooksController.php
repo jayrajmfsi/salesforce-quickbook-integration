@@ -1,20 +1,26 @@
 <?php
 
-
 namespace AppBundle\Controller\Base\QuickBooks;
+
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class QuickBooksController extends AbstractFOSRestController
+class QuickBooksController extends FOSRestController
 {
     /**
-     * @Route("/", name="home-page")
+     * @Rest\Get("/salesforce-connect", name="home-page")
      */
-    public function salesforcePage(Request $request)
+    public function salesForcePage(Request $request)
     {
+        $token = $request->getSession()->get('user_token');
+        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
+
+            return $this->redirect($this->generateUrl('user_login'));
+        }
+
         $data = $request->query->get('data');
 
         return $this->render('@App/salesforce_connect.html.twig');
@@ -39,8 +45,14 @@ class QuickBooksController extends AbstractFOSRestController
      * @Route("quickbooks-connect", name="quickbooks-page")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function qucickBooksPage()
+    public function qucickBooksPage(Request $request)
     {
+        $token = $request->getSession()->get('user_token');
+        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
+
+            return $this->redirect($this->generateUrl('user_login'));
+        }
+
         return $this->render('@App/quickbooks_connect.html.twig');
     }
 
@@ -50,7 +62,7 @@ class QuickBooksController extends AbstractFOSRestController
      * @param Request $request
      * @return mixed
      */
-    public function connectQuickbooks(Request $request)
+    public function connectToQuickbooks(Request $request)
     {
         return new JsonResponse(
             [
