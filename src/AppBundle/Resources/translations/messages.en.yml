@@ -1,13 +1,46 @@
 api:
+  response:
+    error:
+      request_unauthorized: The request was found unauthorized to perform the specified task.
+      invalid_content: Request couldn't be processed due to Invalid Content.
+      invalid_credentials: Invalid credentials provided.
+      internal_error: An error occurred on the server.  Some extra detail may exist in the Response object.
+      invalid_content_type: "Content-Type not set in the header or the content type/content is invalid."
+      invalid_request_data: "The operation was rejected due to invalid request content provided."
+      resource_not_found: The resource request could not be found on the server.
+      request_method_not_allowed: This operation is not allowed on the requested url.
+      resource_already_exists: The resource being created in this request already exists.
+      request_timed_out: "The request has timed out,
+              i.e. request was not received within expected time interval by server."
+      service_unavailable: "Service is currently under maintenance, please try again later."
+      gateway_timeout: "No response received by requesting server within specified time,
+              reversal needs to be triggered from device end."
+      incomplete_req: "Incomplete Request."
+      invalid_content_length: "Content Length not set or the content length set is incorrect."
+      invalid_email: "No User is not associated with this email"
+      invalid_email_data: "Invalid Email format found in request content."
+      invalid_username: "Invalid username format provided in request."
+      username_exists: "Username provided in request is taken by someone else, please try with another username."
+      email_exists: "Email provided in request is already linked to someone else's Account,
+              please try with another email."
+      invalid_confirm_password: "The password and confirm Password do not Match"
+      disabled_user: "The user account is currently disabled."
+
+    success:
+      message: success
+      password_reset: The password was reset successfully.
+      user_created: User was created successfully.
+      user_updated: User was updated successfully.
+    failure:
+      message: failure
+
     quickbooks:
         success:
-
+          message: QuickBooks Account Connected Successfully
         failure:
-
+          message: QuickBooks Connect Error
     salesforce:
-        success:
-
-        failure:
-
-    response:
-        failure: Failure Occurred
+      success:
+        message: Salesforce Account Connected Successfully
+      failure:
+        message: Salesforce Connect Error

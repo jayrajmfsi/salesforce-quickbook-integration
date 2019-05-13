@@ -8,13 +8,17 @@ require('../css/style.css');
 require('../css/button.css');
 require('../css/pace.min.css');
 require('../css/box_layout.css');
+
 // js files to import from node modules
-require('../../../../../node_modules/popper.js/dist/umd/popper.min.js');
-require('../../../../../node_modules/bootstrap/dist/js/bootstrap.min.js');
-require('../../../../../node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js');
-require('../../../../../node_modules/@coreui/coreui/dist/js/coreui.min.js');
+require('../../../../../node_modules/popper.js/dist/umd/popper.min');
+require('../../../../../node_modules/bootstrap/dist/js/bootstrap.min');
+require('../../../../../node_modules/perfect-scrollbar/dist/perfect-scrollbar.min');
+require('../../../../../node_modules/@coreui/coreui/dist/js/coreui.min');
 require('../../../../../node_modules/daterangepicker/daterangepicker');
-require('./login.js');
-require('./salesforce_connect.js');
-require('./quickbooks_connect.js');
-require('./syncData.js');
+require('../../../../../node_modules/jquery-validation/dist/jquery.validate.min');
+require('../../../../../node_modules/jquery-validation/dist/additional-methods.min');
+require('./login');
+require('./register');
+require('./salesforce_connect');
+require('./quickbooks_connect');
+require('./syncData');

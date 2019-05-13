@@ -8,37 +8,95 @@
           <div class="card-body p-4">
             <h1>Register</h1>
             <p class="text-muted">Create your account</p>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="icon-user"></i>
-                </span>
+            <form method="post" action="#" id="needs-validation-for-register" novalidate>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="username" placeholder="Username" required>
               </div>
-              <input class="form-control" type="text" placeholder="Username">
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">@</span>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">@</span>
+                </div>
+                <input class="form-control" type="text" name="email" placeholder="Email" required>
               </div>
-              <input class="form-control" type="text" placeholder="Email">
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="icon-lock"></i>
-                </span>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="sf_account_id" placeholder="SFAccountId" required>
               </div>
-              <input class="form-control" type="password" placeholder="Password">
-            </div>
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="icon-lock"></i>
-                </span>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="sf_client_id" placeholder="SFClientId" required>
               </div>
-              <input class="form-control" type="password" placeholder="Repeat password">
-            </div>
-            <button class="btn btn-block btn-success" type="button">Create Account</button>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="sf_client_secret" placeholder="SFClientSecret" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="sf_redirect_uri" placeholder="SFRedirectURI" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="qb_client_id" placeholder="QBClientId" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="qb_client_secret" placeholder="QBClientSecret" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-user"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="text" name="qb_redirect_uri" placeholder="QBRedirectURI" required>
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-lock"></i>
+                  </span>
+                </div>
+                <input class="form-control" id="password" type="password" name="password" placeholder="Password" required>
+              </div>
+              <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="icon-lock"></i>
+                  </span>
+                </div>
+                <input class="form-control" type="password" name="confirmPassword" placeholder="Repeat password" required>
+              </div>
+              <button class="btn btn-block btn-success" type="submit">Create Account</button>
+            </form>
             <p style="margin-top: 5px; margin-bottom: 5px;">
               <span class="text-muted">Already Have an Account. Click Here</span>
               <a href="{{ path('user_login') }}">Login</a>
@@ -49,4 +107,3 @@
     </div>
   </div>
 {% endblock %}
-

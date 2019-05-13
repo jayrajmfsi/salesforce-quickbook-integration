@@ -1,7 +1,7 @@
-// webpack.config.js
 var Encore = require('@symfony/webpack-encore');
 var webpack = require('webpack');
 var path = require('path');
+
 Encore
 // directory where all compiled assets will be stored
     .setOutputPath('web/build/')
@@ -25,7 +25,6 @@ Encore
 // export the final configuration
 let config = Encore.getWebpackConfig();
 config.resolve.alias = {
-    'jquery': path.join(__dirname, 'node_modules/jquery/dist/jquery'),
-
+    'jquery': path.join(__dirname, 'node_modules/jquery/dist/jquery')
 };
 module.exports = config;

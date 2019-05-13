@@ -24,6 +24,14 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
+  eat24.exception_listener:
+    class: AppBundle\EventListener\ExceptionListener
+    parent: base_service
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+      - { name: monolog.logger, channel: exception }
+    public: true
+
   authentication_token:
     class: AppBundle\Service\AuthenticateToken
     parent: base_service
@@ -31,5 +39,25 @@ services:
 
   api_response:
     class: AppBundle\Service\ApiResponse
+    parent: base_service
+    public: true
+
+  app.utils:
+    class: AppBundle\Service\Utils
+    parent: base_service
+    public: true
+
+  app.user_api_service:
+    class: AppBundle\Service\UserApiProcessingService
+    parent: base_service
+    public: true
+
+  app.salesforce_api_service:
+    class: AppBundle\Service\SalesforceApiProcessingService
+    parent: base_service
+    public: true
+
+  app.quickbooks_api_service:
+    class: AppBundle\Service\QuickbooksApiProcessingService
     parent: base_service
     public: true
