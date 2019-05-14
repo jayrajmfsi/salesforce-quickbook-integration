@@ -41,6 +41,12 @@ api:
           message: QuickBooks Connect Error
     salesforce:
       success:
-        message: Salesforce Account Connected Successfully
+        connect: Salesforce Account Connected Successfully
+        fetch_customer_success: Successfully fetched customers from Salesforce
+        new_access_token: New access token generated
+
+
       failure:
         message: Salesforce Connect Error
+        unauthorized: UnAuthorized
+        invalid_refresh_token: Invalid Refresh Token

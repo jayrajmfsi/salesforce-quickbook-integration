@@ -32,15 +32,20 @@ class ApiResponse extends BaseService
      *
      *  @param string $responseKey
      *  @param array $data
+     *  @param string $message
      *
      *  @return array
      */
-    public function createUserApiSuccessResponse($responseKey, $data)
+    public function createUserApiSuccessResponse($message, $responseKey = '', $data = '')
     {
-        return [
+        $response = [
             'reasonCode' => '0',
-            'reasonText' => $this->translator->trans('api.response.success.message'),
-            $responseKey => $data,
+            'reasonText' => $this->translator->trans($message),
         ];
+        if (!empty($responseKey)) {
+            $response[$responseKey] = $data;
+        }
+
+        return $response;
     }
 }

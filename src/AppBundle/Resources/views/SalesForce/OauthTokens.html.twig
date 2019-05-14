@@ -1,0 +1,7 @@
+<script type="application/javascript">
+    {% set token = RefreshToken %}
+    var refreshtoken = '{{token}}';
+    localStorage.setItem("RefreshToken", refreshtoken);
+    // window.location.href = "/home";
+    alert("SalesForce Refresh Tokens stored.")
+</script>

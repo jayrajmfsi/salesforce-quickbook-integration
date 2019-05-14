@@ -49,7 +49,11 @@ class UserController extends FOSRestController
             // Creating final response Array to be released from API Controller.
             $response = $this->container
                 ->get('api_response')
-                ->createUserApiSuccessResponse('UserResponse', $validatedResult['user']['data'])
+                ->createUserApiSuccessResponse(
+                    'api.response.success.message',
+                    'UserResponse',
+                    $validatedResult['user']['data']
+                )
             ;
             // set session for user token
             $request->getSession()->set('user_token', $validatedResult['user']['token']);
@@ -126,9 +130,10 @@ class UserController extends FOSRestController
             $response = $this->container
                 ->get('api_response')
                 ->createUserApiSuccessResponse(
+                    'api.response.success.message',
                     'UserResponse',
                     [
-                        'status' => $this->container
+                    'status' => $this->container
                             ->get('translator.default')->trans('api.response.success.user_created')
                     ]
                 )
