@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Constants\ErrorConstants;
 use AppBundle\Constants\GeneralSFConstants;
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\OAuth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
@@ -29,13 +30,13 @@ class SalesforceService extends BaseService
         try {
             //Check if the client Id and secret are present or not
             $OAuthObject = $this->CheckClient($client_id, $client_secret);
-
-            // Make Curl request to salesforce server and get the oauth tokens.
+            // Make Curl request to sales-force server and get the oauth tokens.
             $url = GeneralSFConstants::SF_AUTH_URI;
             $postField = "grant_type=" . GeneralSFConstants::GrantType . "&code=" . $code . "&client_id=" . $client_id . "&client_secret=" . $client_secret . "&redirect_uri=" . $redirect_uri;
             $requestType = 1;
             $headers = array();
             $headers[] = 'Content-Type: '.GeneralSFConstants::CONTENT_TYPE_URL_ENCODED;
+
             $tokenResponse = $this->MakeCurlRequest($requestType,$url,$postField,$headers);
 
             // Find the user object and store the tokens accordingly.
@@ -45,6 +46,7 @@ class SalesforceService extends BaseService
             $refreshToken = $tokenResponse['refresh_token'];
 
             $result = $this->StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $client_id, $client_secret, $OAuthObject);
+
             return $result;
         } catch (\Exception $exception) {
             throw $exception;
@@ -58,7 +60,7 @@ class SalesforceService extends BaseService
      * @param $tokenType
      * @param $clientId
      * @param $clientSecret
-     * @param $OAuthObject
+     * @param OAuth $OAuthObject
      * @return bool
      * @throws \Exception
      * Method to store tokens in the database.
@@ -70,9 +72,10 @@ class SalesforceService extends BaseService
             $OAuthObject->setAccessToken($accessToken);
             $OAuthObject->setRefreshToken($refreshToken);
             $OAuthObject->setGrantType($tokenType);
-            $OAuthObject->getUserId()->setSFinstanceUrl($instanceUrl);
+            $OAuthObject->getUser()->setSFinstanceUrl($instanceUrl);
             $this->entityManager->persist($OAuthObject);
             $this->entityManager->flush();
+
             return $OAuthObject;
         } catch (\Exception $exception) {
             throw $exception;
@@ -288,6 +291,8 @@ class SalesforceService extends BaseService
             // Json_decode the response
             $response = json_decode($result, true);
             curl_close($ch);
+
+            $this->serviceContainer->get('monolog.logger.api')->debug('Curl Api Response: '. $result);
 
             return $response;
         } catch (\Exception $exception) {

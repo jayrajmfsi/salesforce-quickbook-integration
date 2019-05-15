@@ -49,7 +49,7 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.reasonCode === '0') {
-                        localStorage.setItem('sf_oauth_data', JSON.stringify(data.UserResponse));
+                        localStorage.setItem('oauth_credentials', JSON.stringify(data.UserResponse));
                         window.location.href = '/app_dev.php/salesforce-connect';
                     } else {
                         alert(data.reasonText);

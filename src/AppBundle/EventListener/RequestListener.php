@@ -38,13 +38,18 @@ class RequestListener extends BaseService
     {
         $request = $event->getRequest();
 
-        // Checking the route hit by request is topps API route or not.
-        $route = $request->attributes->get('_route');
-
-        // Checking if request is for APIs.
-        if (0 !== strpos($route, 'api_v')) {
+        $method  = $request->getRealMethod();
+        if ('OPTIONS' == $method) {
+            $response = new JsonResponse(['status' => true]);
+            $event->setResponse($response);
             return true;
         }
+        $route = $request->attributes->get('_route');
+
+//         Checking if request is for APIs.
+//        if (0 !== strpos($route, 'api_v')) {
+//            return true;
+//        }
 
         $this->setRequestContent($request);
 
@@ -55,6 +60,7 @@ class RequestListener extends BaseService
                 'content' => $request->getContent()
             ]
         ]);
+        return true;
     }
 
     /**

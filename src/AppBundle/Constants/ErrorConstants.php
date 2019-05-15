@@ -50,6 +50,6 @@ class ErrorConstants
         self::DISABLEDUSER => ['code' => '1020', 'message' => 'api.response.error.disabled_user'],
         self::INVALID_CONFIRM_PASS => ['code' => '1021', 'message' => 'api.response.error.invalid_confirm_password'],
         self::INVALID_NEW_PASS_FORMAT =>
-            ['code' => '1019', 'message' => 'api.response.error.invalid_newpass_format']
+            ['code' => '1019', 'message' => 'api.response.error.invalid_newpass_format'],
     ];
 }

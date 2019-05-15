@@ -35,7 +35,7 @@ class OAuth
     /**
      * @var boolean
      *
-     * @ORM\Column(name="app_type", type="boolean", nullable=false,length=1,
+     * @ORM\Column(name="app_type", type="smallint", nullable=false,length=1,
      * options={"comment":"1 means saleforce account, 2 means quickbooks account", "default":"1"})
      */
     private $appType;
@@ -333,11 +333,15 @@ class OAuth
     {
         return $this->appType;
     }
+
     /**
      * @param bool $appType
+     * @return OAuth
      */
     public function setAppType($appType)
     {
         $this->appType = $appType;
+
+        return $this;
     }
 }

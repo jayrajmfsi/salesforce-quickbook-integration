@@ -11,41 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 class QuickBooksController extends FOSRestController
 {
     /**
-     * @Rest\Get("/salesforce-connect", name="home-page")
-     */
-    public function salesForcePage(Request $request)
-    {
-        $token = $request->getSession()->get('user_token');
-        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
-
-            return $this->redirect($this->generateUrl('user_login'));
-        }
-
-        $data = $request->query->get('data');
-
-        return $this->render('@App/salesforce_connect.html.twig');
-    }
-
-    /**
-     * @Rest\Post("connect-to-salesforce", name="connect-salesforce")
-     * @param Request $request
-     */
-    public function connectToSalesforce(Request $request)
-    {
-        return new JsonResponse(
-            [
-                'reasonCode' => '0',
-                'reasonText' => 'success'
-            ]
-        );
-    }
-
-    /**
      * Quickbooks page containing the button for connecting to quickbooks
      * @Route("quickbooks-connect", name="quickbooks-page")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function qucickBooksPage(Request $request)
+    public function quickBooksPage(Request $request)
     {
         $token = $request->getSession()->get('user_token');
         if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {

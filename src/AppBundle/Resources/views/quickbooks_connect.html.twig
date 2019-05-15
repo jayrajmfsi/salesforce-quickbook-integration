@@ -14,6 +14,12 @@
         <button class="app-button" id="quickbooks-connect">Connect With Quickbooks</button>
     </div>
 </div>
-
+<script type="application/javascript">
+    {% set token = RefreshToken %}
+    var refreshtoken = '{{token}}';
+    localStorage.setItem("RefreshToken", refreshtoken);
+    // window.location.href = "/home";
+    alert("Connected to Salesforce Successfully.")
+</script>
 </body>
 </html>

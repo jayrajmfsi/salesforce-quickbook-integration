@@ -94,13 +94,21 @@ class UserApiProcessingService extends BaseService
             ;
             /** @var User $user */
             $user = $validationResult['message']['user'];
-            $data = $this->entityManager->getRepository('AppBundle:OAuth')
+            $sfData = $this->entityManager->getRepository('AppBundle:OAuth')
                 ->fetchOAuthData($user, OAuth::SF_OAUTH)
             ;
+            $qbData = $this->entityManager->getRepository('AppBundle:OAuth')
+                ->fetchOAuthData($user, OAuth::QB_OAUTH)
+            ;
 
-            $data = !empty($data) ? $data[0] : [];
+            $sfData = !empty($sfData) ? $sfData[0] : [];
+            $qbData = !empty($qbData) ? $qbData[0] : [];
+
             // Fetching returned User object on Success Case.
-            $validateResult['user']['data'] = $data;
+            $validateResult['user']['data'] = [
+                'sf_oauth' => $sfData,
+                'qb_oauth' => $qbData
+            ];
             $validateResult['status'] = true;
             $validateResult['user']['token'] = $user->getUniqueId();
         } catch (AccessDeniedHttpException $ex) {
@@ -198,6 +206,9 @@ class UserApiProcessingService extends BaseService
             );
         $user->setSfAccountId($data['sf_account_id']);
 
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         $sfOauth = new OAuth();
         $sfOauth->setUser($user)
             ->setClientId($data['sf_client_id'])
@@ -205,6 +216,8 @@ class UserApiProcessingService extends BaseService
             ->setRedirectUri($data['sf_redirect_uri'])
             ->setAppType(OAuth::SF_OAUTH)
         ;
+        $this->entityManager->persist($sfOauth);
+
         $qbOauth = new OAuth();
         $qbOauth->setUser($user)
             ->setClientId($data['qb_client_id'])
@@ -213,8 +226,6 @@ class UserApiProcessingService extends BaseService
             ->setAppType(OAuth::QB_OAUTH)
         ;
 
-        $this->entityManager->persist($user);
-        $this->entityManager->persist($sfOauth);
         $this->entityManager->persist($qbOauth);
         $this->entityManager->flush();
     }
