@@ -43,35 +43,35 @@ class OAuth
     /**
      * @var string
      *
-     * @ORM\Column(name="client_id", type="string", length=100, nullable=true)
+     * @ORM\Column(name="client_id", type="string", nullable=true)
      */
     private $clientId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="client_secret", type="string", length=100, nullable=true)
+     * @ORM\Column(name="client_secret", type="string", nullable=true)
      */
     private $clientSecret;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="access_token", type="string", length=255, nullable=true)
+     * @ORM\Column(name="access_token", type="text", nullable=true)
      */
     private $accessToken;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="refresh_token", type="string", length=255, nullable=true)
+     * @ORM\Column(name="refresh_token", type="text", nullable=true)
      */
     private $refreshToken;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="redirect_uri", type="string", length=255, nullable=true)
+     * @ORM\Column(name="redirect_uri", type="string", nullable=true)
      */
     private $redirectUri;
 
@@ -321,7 +321,7 @@ class OAuth
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUser()
+    public function getUser() : User
     {
         return $this->user;
     }

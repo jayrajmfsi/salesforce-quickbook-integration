@@ -101,7 +101,7 @@ class SalesForceController extends FOSRestController
             ;
 
             return $this->render(
-                'AppBundle::quickbooks_connect.html.twig',
+                'AppBundle::salesforce_oauth.html.twig',
                 array("RefreshToken" => $result->getRefreshToken())
             );
         } catch (\Exception $exception) {

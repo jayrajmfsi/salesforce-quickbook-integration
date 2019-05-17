@@ -1,0 +1,7 @@
+<script type="application/javascript">
+    {% set token = RefreshToken %}
+    var refreshtoken = '{{token}}';
+    localStorage.setItem("RefreshToken", refreshtoken);
+    alert("Connected to Quickbooks Successfully.");
+    window.location.href = "/app_dev.php/sync-data";
+</script>

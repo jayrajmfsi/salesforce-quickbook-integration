@@ -30,7 +30,6 @@ class ErrorConstants
     const GATEWAY_TIMEOUT = 'GATEWAYTIMEOUT';
     const INVALID_NEW_PASS_FORMAT = 'INVALIDNEWPASSFORMAT';
 
-
     public static $errorCodeMap = [
         self::INVALID_AUTHORIZATION => ['code' => '403', 'message' => 'api.response.error.request_unauthorized'],
         self::RESOURCE_NOT_FOUND => ['code' => '404', 'message' => 'api.response.error.resource_not_found'],

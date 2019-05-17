@@ -233,6 +233,6 @@ class UserApiProcessingService extends BaseService
     public function checkRequestToken($token)
     {
         $user = $this->entityManager->getRepository('AppBundle:User')->findOneBy(['uniqueId' => $token]);
-        return !empty($user);
+        return $user ? $user : false;
     }
 }
