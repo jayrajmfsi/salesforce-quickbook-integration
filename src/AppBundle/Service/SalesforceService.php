@@ -153,7 +153,7 @@ class SalesforceService extends BaseService
             // If record size is zero, then throw content not found exception.
             $size = $response['totalSize'];
             if ($size === 0) {
-                throw new \Exception(ErrorConstants::CONTENT_NOT_FOUND);
+                return null;
             }
             // Insert the records into the database in a loop
             for ($i = 0; $i < $size; $i++) {

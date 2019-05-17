@@ -167,14 +167,15 @@ class UserController extends FOSRestController
      * Sync Data
      * @Rest\Get("sync-data", name="sync-data")
      */
-    public function syncPage()
+    public function syncPage(Request $request)
     {
         $token = $this->get('session')->get('user_token');
         if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
 
             return $this->redirect($this->generateUrl('user_login'));
         }
-        return $this->render('@App/sync_data.html.twig');
+        $update = $request->get('update') ?? null;
+        return $this->render('@App/sync_data.html.twig', ['updated' => $update]);
     }
 
     /**

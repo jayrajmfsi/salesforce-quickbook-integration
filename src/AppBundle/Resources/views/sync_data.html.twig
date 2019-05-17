@@ -5,7 +5,7 @@
 
     {% endblock %}
     {% block javascripts %}
-        {% if updated %}
+        {% if updated == '1' %}
             <script>alert('Data Sync was successful.');</script>
         {% endif %}
         <script src="{{ asset('build/app.js') }}"></script>
@@ -21,8 +21,10 @@
             <p>Please select date range and click to sync salesforce account with quickbooks</p>
             <form class="sync-data-form" action="#">
                 <div class="box-layout__box__input">
-                    <input type="text" name="show-daterange" />
-                </div>
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span></span> <i class="fa fa-caret-down"></i>
+                    </div>                </div>
                 <button class="app-button" id="sync-data" type="submit">Sync Data</button>
             </form>
         </div>

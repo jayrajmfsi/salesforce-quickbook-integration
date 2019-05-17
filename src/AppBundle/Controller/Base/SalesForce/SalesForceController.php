@@ -138,7 +138,7 @@ class SalesForceController extends FOSRestController
                     ->createUserApiSuccessResponse(
                         'api.response.salesforce.success.fetch_customer_success',
                         'sf_ids',
-                        base64_encode($sfIds)
+                        $sfIds? base64_encode($sfIds): ''
                     )
                 ;
             }

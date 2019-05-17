@@ -159,13 +159,14 @@ class QuickBooksController extends FOSRestController
         $accessTokenObj = $request->getSession()->get('sessionAccessToken');
         $sfIds = explode(',' ,base64_decode($request->get('sf_ids')));
         if (!$token || !$user) {
-
             return $this->redirect($this->generateUrl('user_login'));
         }
+
         $update = $request->get('update');
+
         if ($update && $accessTokenObj) {
             $this->get('quickbooks_service')->updateCustomersData($user, $accessTokenObj, $sfIds);
-            return $this->render('@App/sync_data.html.twig', ['updated' => 1]);
+            return $this->redirect($this->generateUrl('sync-data').'?update=1');
         } else {
             throw new BadRequestHttpException(ErrorConstants::INVALID_REQ_DATA);
         }
