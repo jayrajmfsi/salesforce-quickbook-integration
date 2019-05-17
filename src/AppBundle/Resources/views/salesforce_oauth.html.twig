@@ -1,7 +1,7 @@
 <script type="application/javascript">
     {% set token = RefreshToken %}
     var refreshtoken = '{{token}}';
-    localStorage.setItem("RefreshToken", refreshtoken);
+    localStorage.setItem("sf_refresh_token", refreshtoken);
     alert("Connected to Salesforce Successfully.");
     window.location.href = "/app_dev.php/quickbooks-connect";
 </script>

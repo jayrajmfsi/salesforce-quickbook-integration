@@ -66,3 +66,8 @@ services:
     class: AppBundle\Service\SalesforceService
     parent: base_service
     public: true
+
+  quickbooks_service:
+    class: AppBundle\Service\QuickbooksService
+    parent: base_service
+    public: true

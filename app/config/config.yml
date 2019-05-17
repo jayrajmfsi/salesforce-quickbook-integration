@@ -38,7 +38,7 @@ framework:
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
+    strict_variables: false
 
 # Doctrine Configuration
 doctrine:
@@ -102,7 +102,19 @@ monolog:
       level: debug
       channels: [exception]
       formatter: api_formatter
-  channels: [api, exception]
+    curl_api:
+      type: stream
+      path: "%kernel.logs_dir%/curlApi.log"
+      level: debug
+      channels: [curl_api]
+      formatter: api_formatter
+    quickbooks_log:
+      type: stream
+      path: "%kernel.logs_dir%/quickbooksApi.log"
+      level: debug
+      channels: [quickbooks_log]
+      formatter: api_formatter
+  channels: [api, exception, curl_api, quickbooks_log]
 
 # FOS Rest Configuration
 fos_rest:

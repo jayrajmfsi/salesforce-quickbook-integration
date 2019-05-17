@@ -72,7 +72,7 @@ class AuthenticateToken extends BaseService
                     throw new BadRequestHttpException(ErrorConstants::BAD_FETCH_HEADERS);
                 }
             }
-            return $auth[1];
+            return $auth;
         } catch (BadRequestHttpException $exception) {
             throw $exception;
         } catch (\Exception $exception) {

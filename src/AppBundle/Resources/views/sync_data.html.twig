@@ -5,15 +5,21 @@
 
     {% endblock %}
     {% block javascripts %}
+        {% if updated %}
+            <script>alert('Data Sync was successful.');</script>
+        {% endif %}
         <script src="{{ asset('build/app.js') }}"></script>
     {% endblock %}
 </head>
 <body>
+    <div class="link-top-right">
+        <a href="{{ path('logout') }}"><button>Logout</button></a>
+    </div>
     <div class="box-layout box-layout--sync-background">
         <div class="box-layout__box box-layout__box--sync">
             <h1 class="box-layout__title">Data Integration</h1>
             <p>Please select date range and click to sync salesforce account with quickbooks</p>
-            <form class="sync-data">
+            <form class="sync-data-form" action="#">
                 <div class="box-layout__box__input">
                     <input type="text" name="show-daterange" />
                 </div>

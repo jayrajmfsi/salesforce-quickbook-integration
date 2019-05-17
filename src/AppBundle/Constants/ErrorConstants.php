@@ -7,8 +7,8 @@ class ErrorConstants
 {
     const CLIENT_NOT_FOUND = 'Account not registered';
     const BAD_CONNECT_REQUEST = 'Client details not found';
-    const BAD_FETCH_HEADERS = 'Invalid Headers';
-    const CONTENT_NOT_FOUND = 'No Records Found';
+    const BAD_FETCH_HEADERS = 'INVALIDHEADERS';
+    const CONTENT_NOT_FOUND = 'CONTENTNOTFOUND';
     const UNAUTHORIZED_MESSAGE = 'Session expired or invalid';
     const UNAUTHORIZED_CODE = 'INVALID_SESSION_ID';
     const INVALID_AUTHORIZATION = 'INVALIDAUTHORIZATION';
@@ -50,5 +50,14 @@ class ErrorConstants
         self::INVALID_CONFIRM_PASS => ['code' => '1021', 'message' => 'api.response.error.invalid_confirm_password'],
         self::INVALID_NEW_PASS_FORMAT =>
             ['code' => '1019', 'message' => 'api.response.error.invalid_newpass_format'],
+        self::UNAUTHORIZED_CODE => [
+            'code' => '1020', 'message' => 'api.response.salesforce.failure.unauthorized'
+        ],
+        self::BAD_FETCH_HEADERS => [
+            'code' => '1021', 'message' => 'api.response.failure.bad_headers'
+        ],
+        self::CONTENT_NOT_FOUND => [
+            'code' => '1022', 'message' => 'api.response.error.content_not_found'
+        ]
     ];
 }

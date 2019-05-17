@@ -39,3 +39,11 @@
 .box-layout__box__input{
     margin-bottom: 1.6rem;
 }
+
+/* Bottom right text */
+.link-top-right {
+    color: white;
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}

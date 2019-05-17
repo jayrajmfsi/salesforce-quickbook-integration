@@ -45,7 +45,7 @@ class SalesforceService extends BaseService
             $tokenType = $tokenResponse['token_type'];
             $refreshToken = $tokenResponse['refresh_token'];
 
-            $result = $this->StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $client_id, $client_secret, $OAuthObject);
+            $result = $this->StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $OAuthObject);
 
             return $result;
         } catch (\Exception $exception) {
@@ -58,21 +58,25 @@ class SalesforceService extends BaseService
      * @param $refreshToken
      * @param $instanceUrl
      * @param $tokenType
-     * @param $clientId
-     * @param $clientSecret
      * @param OAuth $OAuthObject
      * @return bool
      * @throws \Exception
      * Method to store tokens in the database.
      */
-    public function StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $clientId, $clientSecret, $OAuthObject)
+    public function StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $OAuthObject)
     {
         try {
             // Store the token in the database.
             $OAuthObject->setAccessToken($accessToken);
             $OAuthObject->setRefreshToken($refreshToken);
-            $OAuthObject->setGrantType($tokenType);
-            $OAuthObject->getUser()->setSFinstanceUrl($instanceUrl);
+
+            if ($tokenType) {
+                $OAuthObject->setGrantType($tokenType);
+            }
+
+            if ($instanceUrl) {
+                $OAuthObject->getUser()->setSFinstanceUrl($instanceUrl);
+            }
             $this->entityManager->persist($OAuthObject);
             $this->entityManager->flush();
 
@@ -127,42 +131,37 @@ class SalesforceService extends BaseService
                 ->getRepository('AppBundle:OAuth')
                 ->findOneBy(array('refreshToken' => $refreshToken));
             if (!$OAuthObject) {
-                throw  new UnauthorizedHttpException(null, $this->translator->trans('api.salesforce.failure.unauthorized'));
+                throw  new UnauthorizedHttpException(null, ErrorConstants::UNAUTHORIZED_CODE);
             }
+
             // Get access token.
             $accessToken = $OAuthObject->getAccessToken();
 
             // Make Curl request to fetch the customers.
-            $url = $OAuthObject->getUserId()->getSFinstanceUrl() . '/services/data/v45.0/query?q=select+id+,+Name+,+Email,+Phone+,+MailingStreet+,+MailingCity+,+MailingState+,+MailingPostalCode+,+MailingCountry+from+Contact+where+accountid=\'' . $OAuthObject->getUserId()->getSFaccountId() . '\'AND+CreatedDate>=' . $fromDate . 'T00:00:00.000Z+AND+CreatedDate<=' . $toDate . 'T07:13:54.000Z';
+            $url = $OAuthObject->getUser()->getSfInstanceUrl() . '/services/data/v45.0/query?q=select+id+,+Name+,+Email,+Phone+,+MailingStreet+,+MailingCity+,+MailingState+,+MailingPostalCode+,+MailingCountry+from+Contact+where+accountid=\'' . $OAuthObject->getUser()->getSfAccountId() . '\'AND+CreatedDate>=' . $fromDate . 'T00:00:00.000Z+AND+CreatedDate<=' . $toDate . 'T07:13:54.000Z';
             $postField = null;
             $requestType = 0;
             $headers = array();
-            $headers[] = 'Authorization: ' . $OAuthObject->getGrantType() . ' ' . $accessToken;
+            $headers[] = 'Authorization:' . 'Bearer ' . ' ' . $accessToken;
             $response = $this->MakeCurlRequest($requestType,$url,$postField,$headers);
-
             if (isset($response[0])) {
                 if ($response[0]['message'] === ErrorConstants::UNAUTHORIZED_MESSAGE &&
                     $response[0]['errorCode'] === ErrorConstants::UNAUTHORIZED_CODE) {
-                    throw  new UnauthorizedHttpException(null, $this->translator->trans('api.salesforce.failure.unauthorized'));
+                    throw  new UnauthorizedHttpException(null, ErrorConstants::UNAUTHORIZED_CODE);
                 }
             }
-
             // If record size is zero, then throw content not found exception.
             $size = $response['totalSize'];
             if ($size === 0) {
                 throw new \Exception(ErrorConstants::CONTENT_NOT_FOUND);
             }
-
             // Insert the records into the database in a loop
             for ($i = 0; $i < $size; $i++) {
-                $insertResult = $this->InsertCustomers($response['records'][$i], $OAuthObject->getUserId());
+                $insertResult[] = $this->InsertCustomers($response['records'][$i], $OAuthObject->getUser());
             }
             $this->entityManager->flush();
-            $response = $this->serviceContainer->get('api_response')
-                ->createUserApiSuccessResponse('api.response.salesforce.success.fetch_customer_success')
-            ;
 
-            return $response;
+            return implode(',', $insertResult);
         } catch (UnauthorizedHttpException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
@@ -188,7 +187,9 @@ class SalesforceService extends BaseService
                 ->getRepository('AppBundle:Customer')
                 ->findOneBy(array('sfCustId' => $id));
             if ($findCustomer) {
-                return null;
+                $customer = $findCustomer;
+            } else {
+                $customer = new Customer();
             }
 
             // Parse the result.
@@ -200,7 +201,7 @@ class SalesforceService extends BaseService
             $mailingState = $records['MailingState'];
             $mailingPostalcode = $records['MailingPostalCode'];
             $mailingCountry = $records['MailingCountry'];
-            $customer = new Customer();
+
             $customer->setSfCustId($id);
             $customer->setEmail($email);
             $customer->setName($name);
@@ -210,10 +211,10 @@ class SalesforceService extends BaseService
             $customer->setMailingState($mailingState);
             $customer->setMailingPostalCode($mailingPostalcode);
             $customer->setMailingCountry($mailingCountry);
-            $customer->setUserId($user);
+            $customer->setUser($user);
             $this->entityManager->persist($customer);
 
-            return true;
+            return $id;
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -282,12 +283,18 @@ class SalesforceService extends BaseService
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postField);
             curl_setopt($ch, CURLOPT_POST, $requestType);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
             $result = curl_exec($ch);
             if (curl_errno($ch)) {
-                throw new \Exception($ch);
-            }
+                $this->serviceContainer->get('monolog.logger.exception')
+                    ->debug('Curl Api exception: '. $ch)
+                ;
 
+                throw new \Exception(ErrorConstants::INTERNAL_ERR);
+            }
+            $this->serviceContainer->get('monolog.logger.api')
+                ->debug('Curl Api Request Info: ', curl_getinfo($ch))
+            ;
             // Json_decode the response
             $response = json_decode($result, true);
             curl_close($ch);

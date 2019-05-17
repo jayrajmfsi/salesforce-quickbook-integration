@@ -7,6 +7,7 @@ use AppBundle\Constants\ErrorConstants;
 use AppBundle\Constants\GeneralSFConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class SalesForceController extends FOSRestController
 {
-
     /**
      * @Rest\Get("/salesforce-connect", name="home-page")
      * @param Request $request
@@ -112,12 +112,12 @@ class SalesForceController extends FOSRestController
 
     /**
      * @param Request $request
-     * @Rest\Post("/fetchcustomers")
+     * @Rest\Post("/fetch-salesforce-contacts")
      * @return mixed
      * @throws \Exception
      * Fetch customers from sales force based on the date range
      */
-    public function fetchAction(Request $request)
+    public function fetchCustomersAction(Request $request)
     {
         $response = null;
         try {
@@ -125,15 +125,21 @@ class SalesForceController extends FOSRestController
             $result = $this->container->get('authentication_token')
                 ->ValidateSFHeaders($request,null)
             ;
-
             // Get the date range from API body
-            $fromDate = $request->get('FromDate');
-            $toDate = $request->get('ToDate');
+            $fromDate = $request->get('fromDate');
+            $toDate = $request->get('toDate');
 
             // Fetch customers
             if ($result) {
-                $response = $this->container->get('salesforce_service')
-                    ->FetchCustomers($result, $fromDate, $toDate)
+                $sfIds = $this->container->get('salesforce_service')
+                    ->FetchCustomers($result[1], $fromDate, $toDate)
+                ;
+                $response = $this->get('api_response')
+                    ->createUserApiSuccessResponse(
+                        'api.response.salesforce.success.fetch_customer_success',
+                        'sf_ids',
+                        base64_encode($sfIds)
+                    )
                 ;
             }
         } catch (\Exception $exception) {

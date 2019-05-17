@@ -7,6 +7,7 @@ use AppBundle\Constants\GeneralSFConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use QuickBooksOnline\API\DataService\DataService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -140,6 +141,33 @@ class QuickBooksController extends FOSRestController
             }
         } catch (\Exception $exception) {
             throw $exception;
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @Rest\Get("/update-quickbooks-contacts")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     * Callback controller where quickbooks returns code and the access token api is called here.
+     */
+    public function updateCustomersAction(Request $request)
+    {
+        $response = null;
+        $token = $request->getSession()->get('user_token');
+        $user = $this->get('app.user_api_service')->checkRequestToken($token);
+        $accessTokenObj = $request->getSession()->get('sessionAccessToken');
+        $sfIds = explode(',' ,base64_decode($request->get('sf_ids')));
+        if (!$token || !$user) {
+
+            return $this->redirect($this->generateUrl('user_login'));
+        }
+        $update = $request->get('update');
+        if ($update && $accessTokenObj) {
+            $this->get('quickbooks_service')->updateCustomersData($user, $accessTokenObj, $sfIds);
+            return $this->render('@App/sync_data.html.twig', ['updated' => 1]);
+        } else {
+            throw new BadRequestHttpException(ErrorConstants::INVALID_REQ_DATA);
         }
     }
 }

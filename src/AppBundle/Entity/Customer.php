@@ -75,14 +75,14 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="mailingStreet", type="string", length=50, nullable=true)
+     * @ORM\Column(name="mailingStreet", type="text", nullable=true)
      */
     private $mailingStreet;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="mailingCity", type="string", length=20, nullable=true)
+     * @ORM\Column(name="mailingCity", type="string", length=50, nullable=true)
      */
     private $mailingCity;
 
@@ -111,7 +111,7 @@ class Customer
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @var \DateTime
@@ -478,27 +478,28 @@ class Customer
         return $this->mailingCountry;
     }
 
+
     /**
-     * Set userId
+     * Set user
      *
-     * @param \AppBundle\Entity\User $userId
+     * @param \AppBundle\Entity\User $user
      *
      * @return Customer
      */
-    public function setUserId(\AppBundle\Entity\User $userId = null)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return \AppBundle\Entity\User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 }

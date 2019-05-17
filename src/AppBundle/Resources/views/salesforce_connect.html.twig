@@ -8,12 +8,15 @@
     {% endblock %}
 </head>
 <body>
-    <div class="box-layout box-layout--sf-background">
-        <div class="box-layout__box">
-            <h1 class="box-layout__title">Data Integration</h1>
-            <button class="app-button" id="salesforce-connect">Connect With SalesForce</button>
+        <div class="link-top-right">
+            <a href="{{ path('logout') }}"><button>Logout</button></a>
         </div>
-    </div>
+        <div class="box-layout box-layout--sf-background">
+            <div class="box-layout__box">
+                <h1 class="box-layout__title">Data Integration</h1>
+                <button class="app-button" id="salesforce-connect">Connect With SalesForce</button>
+            </div>
+        </div>
 
 </body>
 </html>
