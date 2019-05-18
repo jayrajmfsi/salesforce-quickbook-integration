@@ -2,6 +2,9 @@
   "name": "salesforce-qb-integration",
   "version": "1.0.0",
   "description": "Integration of SalesForce and Quickbooks using core ui template",
+  "engines": {
+    "node": "10.3.0"
+  },
   "dependencies": {
     "@coreui/coreui": "^2.1.7",
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "1.2.0",
