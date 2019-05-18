@@ -14,4 +14,5 @@ class GeneralSFConstants
     const CONTENT_TYPE_URL_ENCODED = 'application/x-www-form-urlencoded';
     const NEW_TOKEN = 'NewAccessToken';
     const OAUTH_MODE = 'oauth2';
+    const DUMMY_REFRESH_TOKEN = 'abcdef';
 }
