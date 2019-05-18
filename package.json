@@ -30,6 +30,6 @@
     "dev": "./node_modules/.bin/encore dev",
     "webpack": "./node_modules/.bin/encore dev --watch",
     "prod": "./node_modules/.bin/encore production",
-    "heroku-postbuild": "yarn encore ./node_modules/.bin/encore production"
+    "heroku-postbuild": "yarn encore prod"
   }
 }
