@@ -50,7 +50,7 @@ $(document).ready(function() {
                 success: function (data) {
                     if (data.reasonCode === '0') {
                         localStorage.setItem('oauth_credentials', JSON.stringify(data.UserResponse));
-                        window.location.href = '/app_dev.php/salesforce-connect';
+                        window.location.href = '/salesforce-connect';
                     } else {
                         alert(data.reasonText);
                     }

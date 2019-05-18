@@ -33,7 +33,7 @@ $(document).ready(function() {
         event.preventDefault();
         event.stopPropagation();
         $.ajax({
-            url: '/app_dev.php/fetch-salesforce-contacts',
+            url: '/fetch-salesforce-contacts',
             type: 'post',
             beforeSend: function(request) {
                 request.setRequestHeader("Authorization", 'Oauth ' + localStorage.getItem('sf_refresh_token'));
@@ -46,7 +46,7 @@ $(document).ready(function() {
                 } else if (data.reasonCode === '0') {
                     let sfIds = data.sf_ids;
                     alert("Customers Fetched from Salesforce Successfully.");
-                    window.location.href = "/app_dev.php/update-quickbooks-contacts?update=1&sf_ids="+ sfIds;
+                    window.location.href = "/update-quickbooks-contacts?update=1&sf_ids="+ sfIds;
                 } else {
                     alert(data.error.text);
                 }

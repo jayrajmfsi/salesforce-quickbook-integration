@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log(window.location.href);
 
     let form  = $("#needs-validation-for-register");
     form.validate({
@@ -32,13 +31,11 @@ $(document).ready(function() {
             sf_client_secret: "required",
             sf_redirect_uri: {
                 required: true,
-                url: true
             },
             qb_client_id: "required",
             qb_client_secret: "required",
             qb_redirect_uri: {
                 required: true,
-                url: true
             }
         },
         messages: {
@@ -113,9 +110,7 @@ $(document).ready(function() {
                 success: function (data) {
                     if (data.reasonCode === '0') {
                         alert('User Created Successfully');
-                        console.log('---');
-                        window.location.href = "/app_dev.php/login";
-                        console.log(window.location.href);
+                        window.location.href = "/login";
                     } else {
                         alert(data.reasonText);
                     }
