@@ -39,6 +39,7 @@ class SalesforceService extends BaseService
 
             $tokenResponse = $this->MakeCurlRequest($requestType,$url,$postField,$headers);
 
+            var_dump($tokenResponse);exit();
             // Find the user object and store the tokens accordingly.
             $accessToken = $tokenResponse['access_token'];
             $instanceUrl = $tokenResponse['instance_url'];
