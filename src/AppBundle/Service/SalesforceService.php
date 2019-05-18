@@ -292,18 +292,18 @@ class SalesforceService extends BaseService
                 $this->serviceContainer->get('monolog.logger.exception')
                     ->debug('Curl Api request info: ', curl_getinfo($ch))
                 ;
-                $this->serviceContainer->get('monolog.logger.api')->debug('Curl Api Response: '. $result);
+                $this->serviceContainer->get('monolog.logger.api')->debug('Curl Api Response: '. json_decode($result, true));
 
                 throw new \Exception(ErrorConstants::INTERNAL_ERR);
             }
-            $this->serviceContainer->get('monolog.logger.api')
+            $this->serviceContainer->get('monolog.logger.exception')
                 ->debug('Curl Api Request Info: ', curl_getinfo($ch))
             ;
             // Json_decode the response
             $response = json_decode($result, true);
             curl_close($ch);
 
-            $this->serviceContainer->get('monolog.logger.api')->debug('Curl Api Response: '. $result);
+            $this->serviceContainer->get('monolog.logger.exception')->debug('Curl Api Response: '. $response);
 
             return $response;
         } catch (\Exception $exception) {
