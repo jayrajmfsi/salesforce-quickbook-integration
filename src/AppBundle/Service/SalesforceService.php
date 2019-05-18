@@ -292,6 +292,7 @@ class SalesforceService extends BaseService
                 $this->serviceContainer->get('monolog.logger.exception')
                     ->debug('Curl Api request info: ', curl_getinfo($ch))
                 ;
+                $this->serviceContainer->get('monolog.logger.api')->debug('Curl Api Response: '. $result);
 
                 throw new \Exception(ErrorConstants::INTERNAL_ERR);
             }
