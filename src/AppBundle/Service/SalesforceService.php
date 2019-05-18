@@ -43,7 +43,7 @@ class SalesforceService extends BaseService
             $accessToken = $tokenResponse['access_token'];
             $instanceUrl = $tokenResponse['instance_url'];
             $tokenType = $tokenResponse['token_type'];
-            $refreshToken = $tokenResponse['refresh_token'] ? $tokenResponse : GeneralSFConstants::DUMMY_REFRESH_TOKEN;
+            $refreshToken = $tokenResponse['refresh_token'];
 
             $result = $this->StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $OAuthObject);
 
