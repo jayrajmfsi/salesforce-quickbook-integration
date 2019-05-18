@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Integration of SalesForce and Quickbooks using core ui template",
   "engines": {
-    "node": "10.3.0"
+    "node": "10.15.3"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.7",
@@ -30,6 +30,6 @@
     "dev": "./node_modules/.bin/encore dev",
     "webpack": "./node_modules/.bin/encore dev --watch",
     "prod": "./node_modules/.bin/encore production",
-    "heroku-postbuild": "yarn encore prod"
+    "heroku-postbuild": "yarn encore ./node_modules/.bin/encore production"
   }
 }
