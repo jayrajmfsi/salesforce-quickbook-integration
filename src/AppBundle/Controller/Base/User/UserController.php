@@ -179,17 +179,17 @@ class UserController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("sync-data", name="syncing-data")
+     * @Rest\Get("/", name="dashboard")
      * @param Request $request
-     * @return JsonResponse
+     * @return mixed
      */
-    public function syncData(Request $request)
+    public function syncData()
     {
-        return new JsonResponse(
-            [
-                'reasonCode' => '0',
-                'reasonText' => 'success'
-            ]
-        );
+        $token = $this->get('session')->get('user_token');
+        if ($token && $this->get('app.user_api_service')->checkRequestToken($token)) {
+            return $this->redirect($this->generateUrl('home-page'));
+        }
+
+        return $this->redirect($this->generateUrl('user_login'));
     }
 }
