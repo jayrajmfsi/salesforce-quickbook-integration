@@ -42,13 +42,27 @@ $(document).ready(function() {
             contentType: 'application/json',
             success: function (data) {
                 if (!data.sf_ids) {
-                    alert('No Records Found in the provided date range');
+                    Swal.fire({
+                        text: 'No Records Found in the provided date range',
+                        type: 'info',
+                        timer: 2000,
+                        position: "top"
+                    });
                 } else if (data.reasonCode === '0') {
                     let sfIds = data.sf_ids;
-                    alert("Customers Fetched from Salesforce Successfully.");
+                    Swal.fire({
+                        text: 'Customers Fetched from Salesforce Successfully.',
+                        type: 'success',
+                        timer: 1500,
+                        position: "top"
+                    });
                     window.location.href = "/update-quickbooks-contacts?update=1&sf_ids="+ sfIds;
                 } else {
-                    alert(data.error.text);
+                    Swal.fire({
+                     text: data.error.text,
+                     type: 'error',
+                     position: "top"
+                    });
                 }
             },
             data: JSON.stringify({ fromDate: start.format('YYYY-MM-DD'), toDate: end.format('YYYY-MM-DD') })

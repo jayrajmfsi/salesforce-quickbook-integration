@@ -11,6 +11,7 @@ require('../css/pace.min.css');
 require('../css/box_layout.css');
 
 // js files to import from node modules
+
 require('../../../../../node_modules/popper.js/dist/umd/popper.min');
 require('../../../../../node_modules/bootstrap/dist/js/bootstrap.min');
 require('../../../../../node_modules/perfect-scrollbar/dist/perfect-scrollbar.min');

@@ -52,12 +52,18 @@ $(document).ready(function() {
                         localStorage.setItem('oauth_credentials', JSON.stringify(data.UserResponse));
                         window.location.href = '/salesforce-connect';
                     } else {
-                        alert(data.reasonText);
+                        Swal.fire({
+                            text: data.reasonText,
+                            type: 'error'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
                     var errorResult = JSON.parse(xhr.responseText);
-                    alert(errorResult.Response.error.text);
+                    Swal.fire({
+                        text: errorResult.Response.error.text,
+                        type: 'error'
+                    });
                 },
                 data: JSON.stringify(user)
             });

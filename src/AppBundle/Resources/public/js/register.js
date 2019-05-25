@@ -109,15 +109,20 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 success: function (data) {
                     if (data.reasonCode === '0') {
-                        alert('User Created Successfully');
                         window.location.href = "/login";
                     } else {
-                        alert(data.reasonText);
+                        Swal.fire({
+                            text: data.reasonText,
+                            type: 'error'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
                     var errorResult = JSON.parse(xhr.responseText);
-                    alert(errorResult.Response.error.text);
+                    Swal.fire({
+                        text: errorResult.Response.error.text,
+                        type: 'error'
+                    });
                 },
                 data: JSON.stringify(user)
             });

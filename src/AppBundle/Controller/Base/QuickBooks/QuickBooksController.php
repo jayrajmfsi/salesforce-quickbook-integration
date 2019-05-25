@@ -21,11 +21,11 @@ class QuickBooksController extends FOSRestController
      */
     public function quickBooksPage(Request $request)
     {
-//        $token = $request->getSession()->get('user_token');
-//        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
-//
-//            return $this->redirect($this->generateUrl('user_login'));
-//        }
+        $token = $request->getSession()->get('user_token');
+        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
+
+            return $this->redirect($this->generateUrl('user_login'));
+        }
 
         return $this->render('@App/quickbooks_connect.html.twig');
     }

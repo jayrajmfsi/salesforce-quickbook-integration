@@ -141,12 +141,10 @@ class UserController extends FOSRestController
                 )
             ;
             // flashbag to show user only once
-            $request->getSession()
-                ->getFlashBag()
-                ->add(
-                    'success',
-                    'Successfully Registered.Kindly Login.'
-                );
+            $this->addFlash(
+                'account_create_success',
+                "Account Created Successfully. Kindly Login."
+            );
         } catch (AccessDeniedHttpException $ex) {
             throw $ex;
         } catch (BadRequestHttpException $ex) {

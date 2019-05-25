@@ -50,3 +50,14 @@
     </div>
   </div>
 {% endblock %}
+{% block javascripts %}
+  {% for message in app.flashes('account_create_success') %}
+    <script>
+      Swal.fire({
+        text: '{{ message }}',
+        timer: 2000,
+        type: 'success'
+      });
+    </script>
+  {% endfor %}
+{% endblock %}
