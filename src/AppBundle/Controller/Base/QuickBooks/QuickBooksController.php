@@ -139,7 +139,7 @@ class QuickBooksController extends FOSRestController
 
                 $this->addFlash(
                     'quickbooks_connect_success',
-                    "Connected to Quickbooks Successfully"
+                    GeneralConstants::QUICKBOOKS_SUCCESS_MESSAGE
                 );
                 return $this->render(
                     'AppBundle::quickbooks_oauth.html.twig',

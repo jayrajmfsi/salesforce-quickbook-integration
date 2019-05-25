@@ -97,7 +97,7 @@ class SalesForceController extends FOSRestController
             ;
             $this->addFlash(
                 'salesforce_connect_success',
-                "Connected to Salesforce Successfully"
+                GeneralConstants::SALESFORCE_SUCCESS_MESSAGE
             );
             return $this->render(
                 'AppBundle::salesforce_oauth.html.twig',

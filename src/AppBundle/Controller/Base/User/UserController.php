@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Base\User;
 
 use AppBundle\Constants\ErrorConstants;
+use AppBundle\Constants\GeneralConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
@@ -143,7 +144,7 @@ class UserController extends FOSRestController
             // flashbag to show user only once
             $this->addFlash(
                 'account_create_success',
-                "Account Created Successfully. Kindly Login."
+                GeneralConstants::ACCOUNT_CREATE_SUCCESS_MESSAGE
             );
         } catch (AccessDeniedHttpException $ex) {
             throw $ex;

@@ -13,4 +13,7 @@ class GeneralConstants
     const NEW_TOKEN = 'NewAccessToken';
     const OAUTH_MODE = 'oauth2';
     const DUMMY_REFRESH_TOKEN = 'abcdef';
+    const QUICKBOOKS_SUCCESS_MESSAGE = 'Connected to Quickbooks Successfully';
+    const SALESFORCE_SUCCESS_MESSAGE = 'Connected to Salesforce Successfully';
+    const ACCOUNT_CREATE_SUCCESS_MESSAGE = 'Account Created Successfully. Kindly Login.';
 }

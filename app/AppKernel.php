@@ -21,7 +21,6 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new \Nelmio\ApiDocBundle\NelmioApiDocBundle(),
 
         ];
