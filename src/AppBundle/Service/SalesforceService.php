@@ -3,7 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Constants\ErrorConstants;
-use AppBundle\Constants\GeneralSFConstants;
+use AppBundle\Constants\GeneralConstants;
 use AppBundle\Entity\Customer;
 use AppBundle\Entity\OAuth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,14 +28,15 @@ class SalesforceService extends BaseService
     public function ConnectToSalesforce($code, $client_id, $client_secret, $redirect_uri)
     {
         try {
+
             //Check if the client Id and secret are present or not
             $OAuthObject = $this->CheckClient($client_id, $client_secret);
             // Make Curl request to sales-force server and get the oauth tokens.
-            $url = GeneralSFConstants::SF_AUTH_URI;
-            $postField = "grant_type=" . GeneralSFConstants::GrantType . "&code=" . $code . "&client_id=" . $client_id . "&client_secret=" . $client_secret . "&redirect_uri=" . $redirect_uri;
+            $url = GeneralConstants::SF_AUTH_URI;
+            $postField = "grant_type=" . GeneralConstants::GRANT_TYPE . "&code=" . $code . "&client_id=" . $client_id . "&client_secret=" . $client_secret . "&redirect_uri=" . $redirect_uri;
             $requestType = 1;
             $headers = array();
-            $headers[] = 'Content-Type: '.GeneralSFConstants::CONTENT_TYPE_URL_ENCODED;
+            $headers[] = 'Content-Type: '.GeneralConstants::CONTENT_TYPE_URL_ENCODED;
 
             $tokenResponse = $this->MakeCurlRequest($requestType,$url,$postField,$headers);
 
@@ -43,7 +44,7 @@ class SalesforceService extends BaseService
             $accessToken = $tokenResponse['access_token'];
             $instanceUrl = $tokenResponse['instance_url'];
             $tokenType = $tokenResponse['token_type'];
-            $refreshToken = $tokenResponse['refresh_token'] ?? GeneralSFConstants::DUMMY_REFRESH_TOKEN;
+            $refreshToken = $tokenResponse['refresh_token'] ?? GeneralConstants::DUMMY_REFRESH_TOKEN;
 
             $result = $this->StoreTokens($accessToken, $refreshToken, $instanceUrl, $tokenType, $OAuthObject);
 
@@ -233,15 +234,18 @@ class SalesforceService extends BaseService
                 ->getRepository('AppBundle:OAuth')
                 ->findOneBy(array('refreshToken' => $refreshToken));
             if (!$OAuthObject) {
-                throw  new UnauthorizedHttpException(null, $this->translator->trans('api.salesforce.failure.invalid_refresh_token'));
+                throw  new UnauthorizedHttpException(
+                    null,
+                    $this->translator->trans('api.salesforce.failure.invalid_refresh_token')
+                );
             }
 
             // Get new access tokens.
-            $url = GeneralSFConstants::SF_AUTH_URI;
+            $url = GeneralConstants::SF_AUTH_URI;
             $requestType = 1;
-            $postField = "grant_type=".GeneralSFConstants::RefreshType."&client_id=".$OAuthObject->getClientId()."&client_secret=".$OAuthObject->getClientSecret()."&refresh_token=".$refreshToken;
+            $postField = "grant_type=".GeneralConstants::REFRESH_TYPE."&client_id=".$OAuthObject->getClientId()."&client_secret=".$OAuthObject->getClientSecret()."&refresh_token=".$refreshToken;
             $headers = array();
-            $headers[] = 'Content-Type: '.GeneralSFConstants::CONTENT_TYPE_URL_ENCODED;
+            $headers[] = 'Content-Type: '.GeneralConstants::CONTENT_TYPE_URL_ENCODED;
             $response = $this->MakeCurlRequest($requestType,$url,$postField,$headers);
 
             // Store the new tokens in the database.

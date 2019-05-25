@@ -3,11 +3,10 @@
 namespace AppBundle\Controller\Base\QuickBooks;
 
 use AppBundle\Constants\ErrorConstants;
-use AppBundle\Constants\GeneralSFConstants;
+use AppBundle\Constants\GeneralConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use QuickBooksOnline\API\DataService\DataService;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -22,11 +21,11 @@ class QuickBooksController extends FOSRestController
      */
     public function quickBooksPage(Request $request)
     {
-        $token = $request->getSession()->get('user_token');
-        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
-
-            return $this->redirect($this->generateUrl('user_login'));
-        }
+//        $token = $request->getSession()->get('user_token');
+//        if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
+//
+//            return $this->redirect($this->generateUrl('user_login'));
+//        }
 
         return $this->render('@App/quickbooks_connect.html.twig');
     }
@@ -36,38 +35,38 @@ class QuickBooksController extends FOSRestController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
-     * @Rest\Get("/quickbooks-connect-action", name="quickbooks-action")
+     * @Rest\Get("/quickbooks-connect-action", name="api-quickbooks-connect")
      * Connect to quickbooks and get the tokens
      */
     public function connectAction(Request $request)
     {
         // Read client id/secret and redirect uri from the url
-        $client_id = $request->get('client_id');
-        $client_secret = $request->get('client_secret');
-        $redirect_uri = $request->get('redirect_uri');
+        $clientId = $request->get('client_id');
+        $clientSecret = $request->get('client_secret');
+        $redirectUri = $request->get('redirect_uri');
 
         // If the client requests are empty then throw bad request exception
-        if (!$client_id || !$client_secret || !$redirect_uri) {
+        if (!$clientId || !$clientSecret || !$redirectUri) {
             throw new BadRequestHttpException(ErrorConstants::BAD_CONNECT_REQUEST);
         }
 
         // Configure to DataService
         $dataService = DataService::Configure(array(
-            'auth_mode' => GeneralSFConstants::OAUTH_MODE,
-            'ClientID' => $client_id,
-            'ClientSecret' => $client_secret,
-            'RedirectURI' => $redirect_uri,
+            'auth_mode' => GeneralConstants::OAUTH_MODE,
+            'ClientID' => $clientId,
+            'ClientSecret' => $clientSecret,
+            'RedirectURI' => $redirectUri,
             'scope' => $this->container->getParameter('oauth_scope'),
             'baseUrl' => $this->container->getParameter('base_url')
         ));
         // Store the information in session so that it can be used in callback
-        $request->getSession()->set("QBClientId", $client_id);
-        $request->getSession()->set("QBClientSecret", $client_secret);
-        $request->getSession()->set("QBRedirectURI", $redirect_uri);
+        $request->getSession()->set("QBClientId", $clientId);
+        $request->getSession()->set("QBClientSecret", $clientSecret);
+        $request->getSession()->set("QBRedirectURI", $redirectUri);
 
 
-        $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-        $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+        $oauth2LoginHelper = $dataService->getOAuth2LoginHelper();
+        $authUrl = $oauth2LoginHelper->getAuthorizationCodeURL();
 
 
         return $this->redirect($authUrl);
@@ -75,7 +74,7 @@ class QuickBooksController extends FOSRestController
 
     /**
      * @param Request $request
-     * @Rest\Get("/quickbooks-callback")
+     * @Rest\Get("/quickbooks-callback", name="api-quickbooks-callback")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      * Callback controller where quickbooks returns code and the access token api is called here.
@@ -83,20 +82,20 @@ class QuickBooksController extends FOSRestController
     public function callbackAction(Request $request)
     {
         try {
-            $client_id = $request->getSession()->get('QBClientId');
-            $client_secret = $request->getSession()->get('QBClientSecret');
-            $oauth_redirect_uri = $request->getSession()->get('QBRedirectURI');
+            $clientId = $request->getSession()->get('QBClientId');
+            $clientSecret = $request->getSession()->get('QBClientSecret');
+            $oauthRedirectUri = $request->getSession()->get('QBRedirectURI');
 
             $dataService = DataService::Configure(array(
-                'auth_mode' => GeneralSFConstants::OAUTH_MODE,
-                'ClientID' => $client_id,
-                'ClientSecret' => $client_secret,
-                'RedirectURI' => $oauth_redirect_uri,
+                'auth_mode' => GeneralConstants::OAUTH_MODE,
+                'ClientID' => $clientId,
+                'ClientSecret' => $clientSecret,
+                'RedirectURI' => $oauthRedirectUri,
                 'scope' => $this->container->getParameter('oauth_scope'),
                 'baseUrl' => $this->container->getParameter('base_url')
             ));
 
-            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $oauth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $url = $request->server->get('QUERY_STRING');
             parse_str($url, $qsArray);
             $parseUrl = array('code' => $qsArray['code'],
@@ -105,7 +104,10 @@ class QuickBooksController extends FOSRestController
             /*
              * Update the OAuth2Token
              */
-            $accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
+            $accessToken = $oauth2LoginHelper->exchangeAuthorizationCodeForToken(
+                $parseUrl['code'],
+                $parseUrl['realmId']
+            );
             $dataService->updateOAuth2Token($accessToken);
             /*
              * Check whether the access token is present or not.
@@ -119,7 +121,10 @@ class QuickBooksController extends FOSRestController
                             'clientSecret' => $accessToken->getClientSecret(),
                         )
                     );
-                // If the client Id and client secret are not found then show error. Else update the access and refresh token.
+                /**
+                 * If the client Id and client secret are not found then show error.
+                 * Else update the access and refresh token.
+                 */
                 if (!$client) {
                     throw new UnauthorizedHttpException(ErrorConstants::INVALID_AUTHORIZATION);
                 } else {
@@ -132,6 +137,10 @@ class QuickBooksController extends FOSRestController
                 $request->getSession()->set('refresh_token', $accessToken->getRefreshToken());
                 $request->getSession()->set('sessionAccessToken', $accessToken);
 
+                $this->addFlash(
+                    'quickbooks_connect_success',
+                    "Connected to Quickbooks Successfully"
+                );
                 return $this->render(
                     'AppBundle::quickbooks_oauth.html.twig',
                     array("RefreshToken" => $accessToken->getRefreshToken())
@@ -146,18 +155,17 @@ class QuickBooksController extends FOSRestController
 
     /**
      * @param Request $request
-     * @Rest\Get("/update-quickbooks-contacts")
+     * @Rest\Get("/update-quickbooks-contacts", name="api-qb-update-contacts")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      * Callback controller where quickbooks returns code and the access token api is called here.
      */
     public function updateCustomersAction(Request $request)
     {
-        $response = null;
         $token = $request->getSession()->get('user_token');
         $user = $this->get('app.user_api_service')->checkRequestToken($token);
         $accessTokenObj = $request->getSession()->get('sessionAccessToken');
-        $sfIds = explode(',' ,base64_decode($request->get('sf_ids')));
+        $sfIds = explode(',', base64_decode($request->get('sf_ids')));
         if (!$token || !$user) {
             return $this->redirect($this->generateUrl('user_login'));
         }

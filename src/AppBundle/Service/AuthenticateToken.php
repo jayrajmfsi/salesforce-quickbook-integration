@@ -1,13 +1,12 @@
 <?php
 
-
 namespace AppBundle\Service;
 
 use AppBundle\Constants\ErrorConstants;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use AppBundle\Constants\GeneralSFConstants;
+use AppBundle\Constants\GeneralConstants;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthenticateToken extends BaseService
@@ -52,7 +51,7 @@ class AuthenticateToken extends BaseService
         return $validateResult;
     }
 
-    public function ValidateSFHeaders($request, $requestType)
+    public function validateSfHeaders($request, $requestType = null)
     {
         try {
             $authorization = $request->headers->get('Authorization');
@@ -62,23 +61,21 @@ class AuthenticateToken extends BaseService
             }
             $auth = explode(' ', $authorization);
             if (
-                (sizeof($auth) !== 2)
-                || ($auth[0] !== GeneralSFConstants::REQUEST_AUTHORIZATION_TYPE)) {
+                (count($auth) !== 2)
+                || ($auth[0] !== GeneralConstants::REQUEST_AUTHORIZATION_TYPE)) {
                 throw new BadRequestHttpException(ErrorConstants::BAD_FETCH_HEADERS);
             }
-            if ($requestType !== GeneralSFConstants::NEW_TOKEN) {
-                if (($contentType === null)
-                    || ($contentType !== GeneralSFConstants::CONTENT_TYPE_JSON)) {
+            if ($requestType !== GeneralConstants::NEW_TOKEN
+                && (($contentType === null) || ($contentType !== GeneralConstants::CONTENT_TYPE_JSON))) {
                     throw new BadRequestHttpException(ErrorConstants::BAD_FETCH_HEADERS);
-                }
             }
+
             return $auth;
         } catch (BadRequestHttpException $exception) {
             throw $exception;
         } catch (\Exception $exception) {
             throw $exception;
         }
-
     }
 
     /**

@@ -4,12 +4,10 @@
 namespace AppBundle\Controller\Base\SalesForce;
 
 use AppBundle\Constants\ErrorConstants;
-use AppBundle\Constants\GeneralSFConstants;
+use AppBundle\Constants\GeneralConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -32,8 +30,6 @@ class SalesForceController extends FOSRestController
             return $this->redirect($this->generateUrl('user_login'));
         }
 
-        $data = $request->query->get('data');
-
         return $this->render('@App/salesforce_connect.html.twig');
     }
 
@@ -41,7 +37,7 @@ class SalesForceController extends FOSRestController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Exception
-     * @Rest\Get("/salesforce-connect-action", name="saleforce-action")
+     * @Rest\Get("/salesforce-connect-action", name="api-salesforce-connect")
      * Connect to sales-force and get the tokens
      */
     public function connectAction(Request $request)
@@ -73,7 +69,7 @@ class SalesForceController extends FOSRestController
 
     /**
      * @param Request $request
-     * @Rest\Get("/salesforce-callback")
+     * @Rest\Get("/salesforce-callback", name="api-salesforce-callback")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      * Callback controller where sales-force returns code and the access token api is called here.
@@ -87,19 +83,22 @@ class SalesForceController extends FOSRestController
                 throw new BadRequestHttpException(ErrorConstants::INVALID_REQ_DATA);
             }
             // Read session values
-            $client_id = $request->getSession()->get('SFClientId');
-            $client_secret = $request->getSession()->get('SFClientSecret');
-            $redirect_uri = $request->getSession()->get('SFRedirectURI');
+            $clientId = $request->getSession()->get('SFClientId');
+            $clientSecret = $request->getSession()->get('SFClientSecret');
+            $redirectUri = $request->getSession()->get('SFRedirectURI');
 
-            if (!$client_id || !$client_secret || !$redirect_uri) {
+            if (!$clientId || !$clientSecret || !$redirectUri) {
                 throw new UnprocessableEntityHttpException(ErrorConstants::INVALID_AUTHORIZATION);
             }
             // Connect to salesforce using the code and client secret.
             // If the response is 200 then store the tokens in browser's local storage
             $result = $this->container->get('salesforce_service')
-                ->ConnectToSalesforce($code, $client_id, $client_secret, $redirect_uri)
+                ->ConnectToSalesforce($code, $clientId, $clientSecret, $redirectUri)
             ;
-
+            $this->addFlash(
+                'salesforce_connect_success',
+                "Connected to Salesforce Successfully"
+            );
             return $this->render(
                 'AppBundle::salesforce_oauth.html.twig',
                 array("RefreshToken" => $result->getRefreshToken())
@@ -112,7 +111,7 @@ class SalesForceController extends FOSRestController
 
     /**
      * @param Request $request
-     * @Rest\Post("/fetch-salesforce-contacts")
+     * @Rest\Post("/fetch-salesforce-contacts", name="api-fetch-sf-contacts")
      * @return mixed
      * @throws \Exception
      * Fetch customers from sales force based on the date range
@@ -122,9 +121,8 @@ class SalesForceController extends FOSRestController
         $response = null;
         try {
             // Validate the headers.
-            $result = $this->container->get('authentication_token')
-                ->ValidateSFHeaders($request,null)
-            ;
+            $result = $this->container->get('authentication_token')->validateSfHeaders($request);
+
             // Get the date range from API body
             $fromDate = $request->get('fromDate');
             $toDate = $request->get('toDate');
@@ -153,7 +151,7 @@ class SalesForceController extends FOSRestController
      * @param Request $request
      * @return mixed
      * @throws \Exception
-     * @Rest\Post("/newtoken")
+     * @Rest\Post("/newtoken", name="api-fetch-token")
      */
     public function newTokenAction(Request $request)
     {
@@ -161,7 +159,7 @@ class SalesForceController extends FOSRestController
         try {
             // Validate the headers.
             $result = $this->container->get('authentication_token')
-                ->ValidateSFHeaders($request,GeneralSFConstants::NEW_TOKEN)
+                ->validateSfHeaders($request,GeneralConstants::NEW_TOKEN)
             ;
 
             // Generate new token from the existing refresh tokens

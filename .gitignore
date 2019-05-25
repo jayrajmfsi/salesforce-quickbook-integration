@@ -18,3 +18,5 @@
 /web/bundles/
 node_modules/
 web/build/*
+sonar-project.properties
+.scannerwork/

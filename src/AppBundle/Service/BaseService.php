@@ -2,6 +2,7 @@
 
 
 namespace AppBundle\Service;
+
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;

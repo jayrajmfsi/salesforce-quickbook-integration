@@ -2,7 +2,6 @@
 
 namespace AppBundle\Constants;
 
-
 class ErrorConstants
 {
     const CLIENT_NOT_FOUND = 'Account not registered';

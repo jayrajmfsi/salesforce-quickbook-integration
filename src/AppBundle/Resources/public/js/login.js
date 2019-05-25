@@ -43,7 +43,7 @@ $(document).ready(function() {
             };
 
             $.ajax({
-                url: 'check-credentials',
+                url: 'api-check-credentials',
                 type: 'post',
                 dataType: 'json',
                 contentType: 'application/json',

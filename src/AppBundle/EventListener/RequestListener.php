@@ -31,8 +31,7 @@ class RequestListener extends BaseService
      *  Function for api request authorization.
      *
      * @param GetResponseEvent $event
-     *
-     * @return boolean
+     * @return mixed;
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -45,11 +44,10 @@ class RequestListener extends BaseService
             return true;
         }
         $route = $request->attributes->get('_route');
-
-//         Checking if request is for APIs.
-//        if (0 !== strpos($route, 'api_v')) {
-//            return true;
-//        }
+        // Checking if request is for APIs.
+        if (0 !== strpos($route, 'api')) {
+            return true;
+        }
 
         $this->setRequestContent($request);
 
@@ -60,7 +58,6 @@ class RequestListener extends BaseService
                 'content' => $request->getContent()
             ]
         ]);
-        return true;
     }
 
     /**
@@ -76,8 +73,15 @@ class RequestListener extends BaseService
 
         if ($request->isMethod('GET') && empty($content)) {
             $content = base64_decode($request->get('data'));
-            $request->initialize($request->query->all(), array(), $request->attributes->all(),
-                $request->cookies->all(), array(), $request->server->all(), $content);
+            $request->initialize(
+                $request->query->all(),
+                array(),
+                $request->attributes->all(),
+                $request->cookies->all(),
+                array(),
+                $request->server->all(),
+                $content
+            );
             $request->headers->set('Content-Length', strlen($content));
         }
 

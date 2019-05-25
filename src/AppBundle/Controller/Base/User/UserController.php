@@ -1,10 +1,10 @@
 <?php
 
 namespace AppBundle\Controller\Base\User;
+
 use AppBundle\Constants\ErrorConstants;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -30,7 +30,7 @@ class UserController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("/check-credentials", name="check-credentials")
+     * @Rest\Post("/api-check-credentials", name="api-check-credentials")
      */
     public function checkLoginCredentials(Request $request)
     {
@@ -106,7 +106,7 @@ class UserController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("/register", name="store_user_details")
+     * @Rest\Post("/register", name="api-register-user")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function storeUserData(Request $request)
@@ -124,7 +124,9 @@ class UserController extends FOSRestController
             $validatedResult = $this->container->get('app.user_api_service')->validateCreateUserRequest($content);
 
             // Processing the request and creating the final streamed response to be sent in response.
-            $this->container->get('app.user_api_service')->processCreateUserRequest($validatedResult['user']['data']);
+            $this->container->get('app.user_api_service')
+                ->processCreateUserRequest($validatedResult['user']['data'])
+            ;
 
             // Creating final response Array to be released from API Controller.
             $response = $this->container
@@ -183,7 +185,7 @@ class UserController extends FOSRestController
      * @param Request $request
      * @return mixed
      */
-    public function syncData()
+    public function indexAction()
     {
         $token = $this->get('session')->get('user_token');
         if ($token && $this->get('app.user_api_service')->checkRequestToken($token)) {

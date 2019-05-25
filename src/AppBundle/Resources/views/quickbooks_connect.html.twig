@@ -1,21 +1,25 @@
-<html>
-<head>
-    {% block stylesheets %}
-        <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
-    {% endblock %}
-    {% block javascripts %}
-        <script src="{{ asset('build/app.js') }}"></script>
-    {% endblock %}
-</head>
-<body>
-<div class="link-top-right">
-    <a href="{{ path('logout') }}"><button>Logout</button></a>
-</div>
-<div class="box-layout box-layout--qb-background">
-    <div class="box-layout__box">
-        <h1 class="box-layout__title">Data Integration</h1>
-        <button class="app-button" id="quickbooks-connect">Connect With Quickbooks</button>
+{% extends 'AppBundle::base.html.twig' %}
+{% block body %}
+    <div class="link-top-right">
+        <a href="{{ path('logout') }}"><button class="btn btn-outline-success my-2 my-sm-0">Logout</button></a>
     </div>
-</div>
-</body>
-</html>
+    <div class="box-layout box-layout--qb-background">
+        <div class="box-layout__box">
+            <h1 class="box-layout__title">Data Integration</h1>
+            <button class="app-button" id="quickbooks-connect">Connect With Quickbooks</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {% for message in app.flashes('salesforce_connect_success') %}
+        Swal.fire({
+            text: '{{ message }}',
+            type: 'success',
+            timer: 1500,
+            position: "top"
+        });
+        {% endfor %}
+    </script>
+{% endblock %}

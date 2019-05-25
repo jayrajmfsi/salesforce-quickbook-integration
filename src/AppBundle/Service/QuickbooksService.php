@@ -103,7 +103,7 @@ class QuickbooksService extends BaseService
                 if ($error) {
                     $this->logQuickbooksError($name, $error);
                 }
-                if(empty($entities)) {
+                if (empty($entities)) {
                     throw new UnprocessableEntityHttpException(ErrorConstants::CONTENT_NOT_FOUND);
                 }
                 //Get the first element
@@ -115,7 +115,10 @@ class QuickbooksService extends BaseService
                     $this->logQuickbooksError($name, $error);
                 }
 
-                $xmlBody = XmlObjectSerializer::getPostXmlFromArbitraryEntity($resultingCustomerUpdatedObj, $urlResource);
+                $xmlBody = XmlObjectSerializer::getPostXmlFromArbitraryEntity(
+                    $resultingCustomerUpdatedObj,
+                    $urlResource
+                );
                 $successMsg = "Completed a Sparse Update on {$id} - updated object state is:\n{$xmlBody}\n\n";
                 $this->logQuickbooksError($name, null, $successMsg);
 
@@ -136,13 +139,14 @@ class QuickbooksService extends BaseService
      * @param null $error
      * @param null $response
      */
-    public function logQuickbooksError($name, $error = null, $response = null) {
+    public function logQuickbooksError($name, $error = null, $response = null)
+    {
         $responseLog = array();
         if ($error) {
             $responseLog['status_code'] = $error->getHttpStatusCode();
             $responseLog['helper_message'] = $error->getOAuthHelperError();
             $responseLog['response'] = $error->getResponseBody();
-        } else if ($response) {
+        } elseif ($response) {
             $responseLog['success_response'] = $response;
         }
         $this->serviceContainer->get('monolog.logger.quickbooks_log')

@@ -52,11 +52,11 @@ class ResponseListener extends BaseService
         }
         $mainLogData['request'] = [
             'headers' => $request->headers->all(),
-            'content' => json_decode($request->getContent(), TRUE)
+            'content' => json_decode($request->getContent(), true)
         ];
         $mainLogData['response'] = [
             'headers' => $response->headers->all(),
-            'content' => json_decode($response->getContent(), TRUE)
+            'content' => json_decode($response->getContent(), true)
         ];
         $this->apiLogger->debug('API Response: '.$routeName, $mainLogData);
     }

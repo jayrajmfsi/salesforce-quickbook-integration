@@ -1,13 +1,11 @@
 <?php
 
-
 namespace AppBundle\Constants;
 
-
-class GeneralSFConstants
+class GeneralConstants
 {
-    const GrantType = 'authorization_code';
-    const RefreshType = 'refresh_token';
+    const GRANT_TYPE = 'authorization_code';
+    const REFRESH_TYPE = 'refresh_token';
     const SF_AUTH_URI = 'https://login.salesforce.com/services/oauth2/token';
     const REQUEST_AUTHORIZATION_TYPE = 'Oauth';
     const CONTENT_TYPE_JSON = 'application/json';

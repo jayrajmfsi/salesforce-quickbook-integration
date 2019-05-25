@@ -1,19 +1,7 @@
-<html>
-<head>
-    {% block stylesheets %}
-        <link href="{{ asset('build/app.css') }}" rel="stylesheet"/>
-
-    {% endblock %}
-    {% block javascripts %}
-        {% if updated == '1' %}
-            <script>alert('Data Sync was successful.');</script>
-        {% endif %}
-        <script src="{{ asset('build/app.js') }}"></script>
-    {% endblock %}
-</head>
-<body>
+{% extends 'AppBundle::base.html.twig' %}
+{% block body %}
     <div class="link-top-right">
-        <a href="{{ path('logout') }}"><button>Logout</button></a>
+        <a href="{{ path('logout') }}"><button class="btn btn-outline-success my-2 my-sm-0">Logout</button></a>
     </div>
     <div class="box-layout box-layout--sync-background">
         <div class="box-layout__box box-layout__box--sync">
@@ -29,5 +17,27 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
+{% block javascripts %}
+    {% for message in app.flashes('quickbooks_connect_success') %}
+        <script>
+        Swal.fire({
+        text: '{{ message }}',
+        type: 'success',
+        timer: 1500,
+        position: "top"
+        });
+        </script>
+    {% endfor %}
+    {% if updated == '1' %}
+        <script>
+            Swal.fire({
+                text: 'Sync Successful',
+                type: 'success',
+                timer: 2000,
+                position: "top"
+            });
+            {% endfor %}
+        </script>
+    {% endif %}
+{% endblock %}
