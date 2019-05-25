@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  Quickbooks Controller for connecting with quickbooks and calling the update customers api
+ *  @category Controller
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Controller\Base\QuickBooks;
 
 use AppBundle\Constants\ErrorConstants;
@@ -21,6 +25,7 @@ class QuickBooksController extends FOSRestController
      */
     public function quickBooksPage(Request $request)
     {
+        // check if token set is correct else logout user
         $token = $request->getSession()->get('user_token');
         if (!$token || !$this->get('app.user_api_service')->checkRequestToken($token)) {
 
@@ -73,11 +78,11 @@ class QuickBooksController extends FOSRestController
     }
 
     /**
+     * Callback controller where quickbooks returns code and the access token api is called here.
      * @param Request $request
      * @Rest\Get("/quickbooks-callback", name="api-quickbooks-callback")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
-     * Callback controller where quickbooks returns code and the access token api is called here.
      */
     public function callbackAction(Request $request)
     {
@@ -86,6 +91,7 @@ class QuickBooksController extends FOSRestController
             $clientSecret = $request->getSession()->get('QBClientSecret');
             $oauthRedirectUri = $request->getSession()->get('QBRedirectURI');
 
+            // prepare request data
             $dataService = DataService::Configure(array(
                 'auth_mode' => GeneralConstants::OAUTH_MODE,
                 'ClientID' => $clientId,
@@ -95,6 +101,7 @@ class QuickBooksController extends FOSRestController
                 'baseUrl' => $this->container->getParameter('base_url')
             ));
 
+            // fetch code
             $oauth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $url = $request->server->get('QUERY_STRING');
             parse_str($url, $qsArray);
@@ -154,21 +161,25 @@ class QuickBooksController extends FOSRestController
     }
 
     /**
+     * Calling the update customers api for syncing data
      * @param Request $request
      * @Rest\Get("/update-quickbooks-contacts", name="api-qb-update-contacts")
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
-     * Callback controller where quickbooks returns code and the access token api is called here.
      */
     public function updateCustomersAction(Request $request)
     {
+        // check if token is correct
         $token = $request->getSession()->get('user_token');
         $user = $this->get('app.user_api_service')->checkRequestToken($token);
-        $accessTokenObj = $request->getSession()->get('sessionAccessToken');
-        $sfIds = explode(',', base64_decode($request->get('sf_ids')));
+
         if (!$token || !$user) {
             return $this->redirect($this->generateUrl('user_login'));
         }
+
+        // fetch access token and call the api using that
+        $accessTokenObj = $request->getSession()->get('sessionAccessToken');
+        $sfIds = explode(',', base64_decode($request->get('sf_ids')));
 
         $update = $request->get('update');
 

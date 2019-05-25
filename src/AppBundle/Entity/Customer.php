@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  Customer entity for storing the data for the customer in qb/sf
+ *  @category Entity
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  OAuth entity for storing the oauth credentials for the customer in qb/sf
+ *  @category Entity
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

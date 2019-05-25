@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Quickbooks Service
+ * @category Service
+ * @author <jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Service;
 
 use AppBundle\Constants\ErrorConstants;
@@ -19,6 +23,7 @@ class QuickbooksService extends BaseService
      * @param $accessTokenObj
      * @param $ids
      * @throws \Exception
+     * @return mixed
      */
     public function updateCustomersData($user, $accessTokenObj, $ids)
     {

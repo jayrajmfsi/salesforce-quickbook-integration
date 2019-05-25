@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  Constants file having the error code and the message linked to it
+ *  @category Constants
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Constants;
 
 class ErrorConstants
@@ -29,6 +33,10 @@ class ErrorConstants
     const GATEWAY_TIMEOUT = 'GATEWAYTIMEOUT';
     const INVALID_NEW_PASS_FORMAT = 'INVALIDNEWPASSFORMAT';
 
+    /**
+     * @var array
+     * Error code mapping with the messages to be sent back
+     */
     public static $errorCodeMap = [
         self::INVALID_AUTHORIZATION => ['code' => '403', 'message' => 'api.response.error.request_unauthorized'],
         self::RESOURCE_NOT_FOUND => ['code' => '404', 'message' => 'api.response.error.resource_not_found'],

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  General Constants
+ *  @category Constants
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Constants;
 
 class GeneralConstants

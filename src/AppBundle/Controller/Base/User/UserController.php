@@ -1,5 +1,9 @@
 <?php
-
+/**
+ *  UserController Controller for declaring user related actions
+ *  @category Controller
+ *  @author Jayraj Arora<jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Controller\Base\User;
 
 use AppBundle\Constants\ErrorConstants;
@@ -12,10 +16,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-
 class UserController extends FOSRestController
 {
     /**
+     * Login Page
      * @Rest\Get("/login", name="user_login")
      */
     public function loginPage(Request $request)
@@ -31,6 +35,7 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Check login credentials
      * @Rest\Post("/api-check-credentials", name="api-check-credentials")
      */
     public function checkLoginCredentials(Request $request)
@@ -78,6 +83,7 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Show register page
      * @Rest\Get("/register", name="user_register")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -93,6 +99,7 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Logout action for logging out the user
      * @Rest\Get("/logout", name="logout")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -107,6 +114,7 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Register user data
      * @Rest\Post("/register", name="api-register-user")
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -165,7 +173,7 @@ class UserController extends FOSRestController
     }
 
     /**
-     * Sync Data
+     * Sync Data page
      * @Rest\Get("sync-data", name="sync-data")
      */
     public function syncPage(Request $request)
@@ -180,12 +188,14 @@ class UserController extends FOSRestController
     }
 
     /**
+     * Dashboard page for redirecting user to login or home page
      * @Rest\Get("/", name="dashboard")
      * @param Request $request
      * @return mixed
      */
     public function indexAction()
     {
+        // if token is correct then home page else login
         $token = $this->get('session')->get('user_token');
         if ($token && $this->get('app.user_api_service')->checkRequestToken($token)) {
             return $this->redirect($this->generateUrl('home-page'));

@@ -1,13 +1,16 @@
 <?php
-
-
+/**
+ * Request listener class for the incoming requests
+ *
+ * @category Listener
+ * @author <jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use AppBundle\Service\BaseService;
 
 class RequestListener extends BaseService
@@ -38,6 +41,7 @@ class RequestListener extends BaseService
         $request = $event->getRequest();
 
         $method  = $request->getRealMethod();
+        // return success if options request
         if ('OPTIONS' == $method) {
             $response = new JsonResponse(['status' => true]);
             $event->setResponse($response);

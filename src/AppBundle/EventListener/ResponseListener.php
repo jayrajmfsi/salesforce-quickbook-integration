@@ -1,8 +1,8 @@
 <?php
 /**
  *  ResponseListener for Handling the operations before releasing Response From Application.
- *
  *  @category EventListener
+ * @author <jayraja@mindfiresolutions.com>
  */
 
 namespace AppBundle\EventListener;

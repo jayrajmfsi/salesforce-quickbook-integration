@@ -1,6 +1,9 @@
 <?php
-
-
+/**
+ * Base Service
+ * @category Service
+ * @author <jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Auth Service
+ * @category Service
+ * @author <jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Service;
 
 use AppBundle\Constants\ErrorConstants;

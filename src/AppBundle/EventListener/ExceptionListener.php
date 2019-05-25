@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Exception listener class for the kernel exception
  *

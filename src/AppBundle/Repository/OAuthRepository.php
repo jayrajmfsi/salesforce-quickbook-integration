@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * OAuth Repository
+ * @category Repository
+ * @author <jayraja@mindfiresolutions.com>
+ */
 namespace AppBundle\Repository;
 
 /**
